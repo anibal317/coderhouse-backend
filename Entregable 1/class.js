@@ -14,7 +14,7 @@ class Client{
         this.pets.push(pet)
     }
     countMascotas(){
-        return this.pets.length()
+        return `Tiene ${this.pets.length} mascota/s`
     }
 
     addLibros(libro){
@@ -24,6 +24,9 @@ class Client{
         return this.books.map((book)=>{
            return book.title
         })
+    }
+    getBooks(){
+        return this.books
     }
 }
 
@@ -35,4 +38,7 @@ client1.addLibros({
     title:"Libro 2"
 })
 
+
+console.log(client1.getFullName())
 console.log(client1.getBookNames())
+console.log(client1.countMascotas())
