@@ -1,6 +1,6 @@
 class Client{
     constructor(nombre,apellido,libros,mascotas){
-        this.name = nombre
+        this.name = nombre,
         this.surname = apellido,
         this.books=libros,
         this.pets = mascotas
@@ -13,13 +13,16 @@ class Client{
     addMascotas(pet){
         this.pets.push(pet)
     }
+    
     countMascotas(){
         return `Tiene ${this.pets.length} mascota/s`
     }
 
+    
     addLibros(libro){
         this.books.push(libro)
     }
+    
     getBookNames(){
         return this.books.map((book)=>{
            return book.title
@@ -42,3 +45,7 @@ client1.addLibros({
 console.log(client1.getFullName())
 console.log(client1.getBookNames())
 console.log(client1.countMascotas())
+
+function operacion(num1,num2,func){
+
+}
