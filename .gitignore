@@ -1,4 +1,4 @@
-node_modules
+/node_modules
 /Entregable 2/node_modules
 /Entregable 3/node_modules
 package-lock.json
