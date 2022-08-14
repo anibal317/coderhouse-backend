@@ -1,4 +1,5 @@
 const express = require('express')
+
 const app = express()
 
 const frase = "Pariatur velit est duis qui aliquip dolore cillum in commodo consectetur esse excepteur ad tempor."
@@ -7,6 +8,7 @@ app.get("/", (req, res) => {
     // res.send(frase)
     res.send("Bienvenido")
 })
+
 app.get("/api/frase", (req, res) => {
     // res.send(frase)
     res.send(req.query)
