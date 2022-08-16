@@ -3,7 +3,10 @@ const router = app.Router();
 const { promises: fs } = require('fs');
 
 const {
-	isNumber
+	isNumber,
+	isEmpty,
+	isBodyOk,
+	isPriceNumber
 } = require("../../middlewares");
 
 router.get("/", async (req, res) => {
@@ -34,7 +37,7 @@ router.get("/:id", [isNumber], async (req, res) => {
 	}
 });
 
-router.post("/", async (req, res) => {
+router.post("/", [isEmpty,isBodyOk,isPriceNumber], async (req, res) => {
 	let product = req.body
 	/**
 	 * 
