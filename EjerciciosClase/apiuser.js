@@ -2,15 +2,16 @@ const express = require('express')
 
 const app = express()
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
 
 const lstUsuarios = []
 
 app.post("/usuario", (req, res) => {
     const data = req.body
-    console.log("saludos",req.body)
-    if(!data){
+
+    if (Object.entries(data).length === 0) {
+        console.log("No hay datos")
         res.sendStatus(400)
     }
     lstUsuarios.push(data)
@@ -19,7 +20,7 @@ app.post("/usuario", (req, res) => {
 
 app.get("/usuario", (req, res) => {
     // res.send(frase)
-    res.send("Hola")
+    res.send(lstUsuarios)
 })
 
 app.get("/usuario/:id", (req, res) => {
@@ -28,7 +29,17 @@ app.get("/usuario/:id", (req, res) => {
     res.send("")
 })
 
+app.delete("/usuario/", (req, res) => {
+    let pos = req.params.num
+    res.send(frase.split(" ")[pos])
+});
+
 app.delete("/usuario/:id", (req, res) => {
+    let pos = req.params.num
+    res.send(frase.split(" ")[pos])
+});
+
+app.put("/usuario/:id", (req, res) => {
     let pos = req.params.num
     res.send(frase.split(" ")[pos])
 });
