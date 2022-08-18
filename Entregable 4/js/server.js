@@ -5,7 +5,7 @@ const app = express();
 
 const products = require('./api/products');
 
-
+app.use(express.static("public"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
@@ -26,7 +26,7 @@ app.use("/", (req, res) => {
 })
 
 app.listen(8080, () => {
-    console.log('Servidor iniciado... http://localhost:3000');
+    console.log('Servidor iniciado... http://localhost:8080');
 });
 
 
