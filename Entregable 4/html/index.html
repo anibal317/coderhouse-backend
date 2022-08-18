@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+</head>
+
+<body>
+    <div>
+        <h1>Carga de productos</h1>
+    </div>
+    <form action="http://localhost:8080/api/products" method="post">
+        <div>
+            <label for="inputName">Title</label>
+            <input type="text" name="title" id="inputName" placeholder="">
+        </div>
+        <div>
+            <label for="inputPrice">Price</label>
+            <input type="number" name="price" id="inputPrice" placeholder="">
+        </div>
+        <div>
+            <label for="inputThumbnail">Thumbnail</label>
+            <input type="file" name="thumbnail" id="inputThumbnail" placeholder="">
+        </div>
+        <div>
+            <input type="submit" name="submit" id="submit" value="Guardar" />
+            <input type="reset" name="cancel" id="cancel" value="Cancelar" />
+        </div>
+    </form>
+</body>
+
+</html>

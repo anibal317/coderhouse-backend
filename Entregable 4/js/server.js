@@ -10,6 +10,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/products', products);
+
 app.use("/", (req, res) => {
     res.send(`
         <h1 style="color:red; text:center">Bienvenido!!!</h1>
@@ -24,7 +25,7 @@ app.use("/", (req, res) => {
     `)
 })
 
-app.listen(3000, () => {
+app.listen(8080, () => {
     console.log('Servidor iniciado... http://localhost:3000');
 });
 

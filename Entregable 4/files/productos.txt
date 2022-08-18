@@ -22,5 +22,17 @@
     "price": 100.25,
     "thumbnail": "https://cdn1.iconfinder.com/data/icons/ui-basic-18/32/calculator-128.png",
     "id": 4
+  },
+  {
+    "title": "asdfasd",
+    "price": "1222",
+    "thumbnail": "",
+    "id": 5
+  },
+  {
+    "title": "Producto desde form",
+    "price": "1",
+    "thumbnail": "images.jpg",
+    "id": 6
   }
 ]

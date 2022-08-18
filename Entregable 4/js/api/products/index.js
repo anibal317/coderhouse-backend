@@ -42,7 +42,7 @@ router.get("/:id", [isNumber], async (req, res) => {
 
 router.post("/", [isEmpty, isBodyOk, isPriceNumber], async (req, res) => {
 	let product = req.body
-
+	delete product.submit;
 	console.log("Agregando un producto")
 	const productos = await fs.readFile("./files/productos.txt", 'utf-8')
 
