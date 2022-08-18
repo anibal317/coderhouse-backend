@@ -22,11 +22,5 @@
     "price": 100.25,
     "thumbnail": "https://cdn1.iconfinder.com/data/icons/ui-basic-18/32/calculator-128.png",
     "id": 4
-  },
-  {
-    "title": "PenDrive 32GB",
-    "price": 1520.23,
-    "thumbnail": "https://cdn0.iconfinder.com/data/icons/media-and-communication-3/64/storage-flashdrive-usb-stick-128.png",
-    "id": 5
   }
 ]

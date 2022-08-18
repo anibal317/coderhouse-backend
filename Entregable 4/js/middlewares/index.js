@@ -24,25 +24,30 @@ function isBodyOk(req, res, next) {
     } = req.body
 
     if (!thumbnail && !title || !price) {
-            res.status(400).send({ message: "Error en el armado del body" })
+        res.status(400).send({ message: "Error en el armado del body" })
     } else {
         next()
     }
 }
 
 function isPriceNumber(req, res, next) {
-    let {price} = req.body
-    if((!Number(price) || price <=0)){
+    let { price } = req.body
+    if ((!Number(price) || price <= 0)) {
         res.status(400).send({ message: "price no es un valor válido" })
-    }else{
+    } else {
         next()
     }
 }
 
+function verifyProperties(req, res, next) {
+    
+    next()
+}
 
 module.exports = {
     isNumber,
     isEmpty,
     isBodyOk,
-    isPriceNumber
+    isPriceNumber,
+    verifyProperties
 };

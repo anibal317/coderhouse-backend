@@ -6,7 +6,8 @@ const {
 	isNumber,
 	isEmpty,
 	isBodyOk,
-	isPriceNumber
+	isPriceNumber,
+	verifyProperties
 } = require("../../middlewares");
 
 router.get("/", async (req, res) => {
@@ -23,41 +24,25 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", [isNumber], async (req, res) => {
-	let productId = req.params.id
+	let productId = parseInt(req.params.id)
 	console.log(`Listando el producto  id:${productId}`)
 	try {
 		const objetos = await fs.readFile("./files/productos.txt", 'utf-8')
 		let allProducts = await JSON.parse(objetos)
 		let oneProduct = await allProducts.find(element => element.id === productId)
-
-		res.status(200).send(oneProduct)
-
+		if (oneProduct) {
+			res.status(200).send(oneProduct)
+		} else {
+			res.status(400).send("Producto no encontrado")
+		}
 	} catch (error) {
 		res.status(400).send(`Error en consultar los datos ${error}`)
 	}
 });
 
-router.post("/", [isEmpty,isBodyOk,isPriceNumber], async (req, res) => {
+router.post("/", [isEmpty, isBodyOk, isPriceNumber], async (req, res) => {
 	let product = req.body
-	/**
-	 * 
-	 * const productos = await this.getAll(directory)
-		let newId
-		if (productos.length == 0) {
-			newId = 1
-		} else {
-			const lastId = parseInt(productos[productos.length - 1].id)
-			newId = lastId + 1
-		}
-		productos.push({ ...obj, id: newId })
 
-		try {
-			await fs.writeFile(directory + "/productos.txt", JSON.stringify(productos, null, 2))
-			return console.log(newId)
-		} catch (error) {
-			throw new Error(`Error al guardar: ${error}`)
-		}
-	 */
 	console.log("Agregando un producto")
 	const productos = await fs.readFile("./files/productos.txt", 'utf-8')
 
@@ -80,8 +65,24 @@ router.post("/", [isEmpty,isBodyOk,isPriceNumber], async (req, res) => {
 });
 
 router.put("/:id", [], async (req, res) => {
-	//TODO
-	/**Actualizar producto dependiendo del ID */
+	let productId = parseInt(req.params.id)
+	let newData = req.body
+	console.log(`Editando el producto  id:${productId}`)
+	try {
+		const objetos = await fs.readFile("./files/productos.txt", 'utf-8')
+		let allProducts = await JSON.parse(objetos)
+		let oneProduct = await allProducts.find(element => element.id === productId)
+
+		Object.keys(newData).forEach((key) => {
+			oneProduct[key] === undefined ? null : oneProduct[key] = newData[key]
+		})
+		await fs.writeFile("./files/productos.txt", JSON.stringify(allProducts, null, 2))
+
+		res.status(200).send("sale")
+
+	} catch (error) {
+		res.status(400).send(`Error en consultar los datos ${error}`)
+	}
 });
 
 router.delete("/:id", [isNumber], async (req, res) => {
