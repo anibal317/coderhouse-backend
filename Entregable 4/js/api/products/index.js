@@ -13,14 +13,14 @@ const {
 
 let storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-	  cb(null, 'public/imgs')
+		cb(null, 'public/imgs')
 	},
 	filename: function (req, file, cb) {
-	  cb(null, Date.now()+'-'+file.originalname)
+		cb(null, Date.now() + '-' + file.originalname)
 	}
-  })
-   
-  let upload = multer({ storage: storage })
+})
+
+let upload = multer({ storage: storage })
 
 
 
@@ -56,14 +56,13 @@ router.get("/:id", [isNumber], async (req, res) => {
 	}
 });
 
-	  res.send(file)
-	  router.post("/", [isEmpty, isBodyOk, isPriceNumber, upload.single('thumbnail')], async (req, res) => {
+router.post("/", [upload.single('thumbnail'),isEmpty, isBodyOk, isPriceNumber], async (req, res) => {
 	let product = req.body
 	const file = req.file
 	if (!file) {
-	  const error = new Error('Please upload a file')
-	  error.httpStatusCode = 400
-	  return next(error)
+		const error = new Error('Please upload a file')
+		error.httpStatusCode = 400
+		return next(error)
 	}
 	delete product.submit;
 	console.log("Agregando un producto")
@@ -77,7 +76,7 @@ router.get("/:id", [isNumber], async (req, res) => {
 		newId = lastId + 1
 	}
 	let arr = JSON.parse(productos)
-	arr.push({ ...product, id: newId, thumbnail:file.originalname })
+	arr.push({ ...product, id: newId, thumbnail: file.originalname })
 	try {
 		await fs.writeFile("./files/productos.txt", JSON.stringify(arr, null, 2))
 		res.status(200).send(`Se ha creado el producto con id:${newId}`)

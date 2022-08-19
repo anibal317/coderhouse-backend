@@ -22,11 +22,5 @@
     "price": 100.25,
     "thumbnail": "https://cdn1.iconfinder.com/data/icons/ui-basic-18/32/calculator-128.png",
     "id": 4
-  },
-  {
-    "title": "o875",
-    "price": "655",
-    "id": 5,
-    "thumbnail": "16299471_10210336710108313_2011991746447944363_n.jpg"
   }
 ]
