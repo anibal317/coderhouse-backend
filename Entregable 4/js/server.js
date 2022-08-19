@@ -1,13 +1,13 @@
 const express = require('express');
-const { appendFile } = require('fs');
 const app = express();
-
+const multer = require('multer')
 
 const products = require('./api/products');
 
 app.use(express.static("public"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+
 
 app.use('/api/products', products);
 

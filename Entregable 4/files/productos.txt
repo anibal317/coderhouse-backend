@@ -24,15 +24,9 @@
     "id": 4
   },
   {
-    "title": "asdfasd",
-    "price": "1222",
-    "thumbnail": "",
-    "id": 5
-  },
-  {
-    "title": "Producto desde form",
-    "price": "1",
-    "thumbnail": "images.jpg",
-    "id": 6
+    "title": "o875",
+    "price": "655",
+    "id": 5,
+    "thumbnail": "16299471_10210336710108313_2011991746447944363_n.jpg"
   }
 ]

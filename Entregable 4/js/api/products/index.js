@@ -1,6 +1,7 @@
 const app = require("express");
 const router = app.Router();
 const { promises: fs } = require('fs');
+const multer = require('multer')
 
 const {
 	isNumber,
@@ -9,6 +10,21 @@ const {
 	isPriceNumber,
 	verifyProperties
 } = require("../../middlewares");
+
+let storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+	  cb(null, 'public/imgs')
+	},
+	filename: function (req, file, cb) {
+	  cb(null, Date.now()+'-'+file.originalname)
+	}
+  })
+   
+  let upload = multer({ storage: storage })
+
+
+
+
 
 router.get("/", async (req, res) => {
 	console.log("Listando todos los productos")
@@ -40,8 +56,16 @@ router.get("/:id", [isNumber], async (req, res) => {
 	}
 });
 
-router.post("/", [isEmpty, isBodyOk, isPriceNumber], async (req, res) => {
+	  res.send(file)
+	  router.post("/", [isEmpty, isBodyOk, isPriceNumber, upload.single('thumbnail')], async (req, res) => {
 	let product = req.body
+	const file = req.file
+	console.log(product,file)
+	if (!file) {
+	  const error = new Error('Please upload a file')
+	  error.httpStatusCode = 400
+	  return next(error)
+	}
 	delete product.submit;
 	console.log("Agregando un producto")
 	const productos = await fs.readFile("./files/productos.txt", 'utf-8')
@@ -54,8 +78,7 @@ router.post("/", [isEmpty, isBodyOk, isPriceNumber], async (req, res) => {
 		newId = lastId + 1
 	}
 	let arr = JSON.parse(productos)
-	arr.push({ ...product, id: newId })
-	console.log("Elemento agregado?", arr)
+	arr.push({ ...product, id: newId, thumbnail:file.originalname })
 	try {
 		await fs.writeFile("./files/productos.txt", JSON.stringify(arr, null, 2))
 		res.status(200).send(`Se ha creado el producto con id:${newId}`)
@@ -93,12 +116,10 @@ router.delete("/:id", [isNumber], async (req, res) => {
 		let allProducts = await JSON.parse(objetos)
 		let index = await allProducts.findIndex(element => element.id === productId)
 		allProducts.splice(index, 1)
-		console.log(allProducts)
 		await fs.writeFile("./files/productos.txt", JSON.stringify(allProducts, null, 2))
 		res.status(400).send(`Elemento eliminado`)
 	} catch (error) {
 		res.status(400).send(`Error al eliminar el producto ${error}`)
-		// return []
 	}
 });
 
