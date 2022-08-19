@@ -60,7 +60,6 @@ router.get("/:id", [isNumber], async (req, res) => {
 	  router.post("/", [isEmpty, isBodyOk, isPriceNumber, upload.single('thumbnail')], async (req, res) => {
 	let product = req.body
 	const file = req.file
-	console.log(product,file)
 	if (!file) {
 	  const error = new Error('Please upload a file')
 	  error.httpStatusCode = 400
