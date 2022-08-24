@@ -1,0 +1,55 @@
+<h1 class="bg-primary">
+  Productos
+</h1>
+<div class="position-relative top-0 end-0 mx-auto table-responsive">
+  {{#if listExists}}
+    <table
+      class="table mx-auto table-striped table-dark table-hover align-middle"
+    >
+      <thead>
+        <tr>
+          <th scope="col">
+            #Id
+          </th>
+          <th scope="col">
+            Name
+          </th>
+          <th scope="col">
+            Pricing
+          </th>
+          <th scope="col">
+            Photo
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each suggestedChamps}}
+          <tr>
+            <td>
+              ddd
+              {{this.length}}
+            </td>
+          </tr>
+          <tr>
+            <td scope="row">
+              {{this.id}}
+            </td>
+            <td>
+              {{this.title}}
+            </td>
+            <td>
+              {{this.price}}
+            </td>
+            <td>
+              <img style="width:10%;" src={{this.thumbnail}} />
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    <p>
+      No Hay productos
+    </p>
+  {{/if}}
+</div>

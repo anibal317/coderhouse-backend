@@ -27,14 +27,19 @@ let upload = multer({ storage: storage })
 
 
 router.get("/", async (req, res) => {
+	// res.render('productos', { nombre: 'jorge', apellido: 'sardon' })
+
 	console.log("Listando todos los productos")
 	try {
 		const allProducts = await fs.readFile("./files/productos.txt", 'utf-8')
 		console.log("Listando los productos, usar psotman para ver los resultados")
-		res.status(200).send(JSON.parse(allProducts))
+		res.render('productList', { suggestedChamps: JSON.parse(allProducts), listExists: true })
+		// res.status(200).send(JSON.parse(allProducts))
+		
 	} catch (error) {
-		res.status(400).send(`Error al recuperar los datos ${error}`)
-
+		res.render('productList', { listExists:false })
+		// res.status(400).send(`Error al recuperar los datos ${error}`)
+		
 		return []
 	}
 });
@@ -56,7 +61,7 @@ router.get("/:id", [isNumber], async (req, res) => {
 	}
 });
 
-router.post("/", [upload.single('thumbnail'),isEmpty, isBodyOk, isPriceNumber], async (req, res) => {
+router.post("/", [upload.single('thumbnail'), isEmpty, isBodyOk, isPriceNumber], async (req, res) => {
 	let product = req.body
 	const file = req.file
 	if (!file) {

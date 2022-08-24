@@ -18,9 +18,9 @@
     "id": 3
   },
   {
-    "title": "Calculadora",
+    "title": "Cartuchera",
     "price": 100.25,
-    "thumbnail": "https://cdn1.iconfinder.com/data/icons/ui-basic-18/32/calculator-128.png",
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/4100/4100658.png",
     "id": 4
   }
 ]
