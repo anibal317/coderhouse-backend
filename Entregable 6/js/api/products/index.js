@@ -10,13 +10,14 @@ const {
 	isPriceNumber,
 	verifyProperties
 } = require("../../middlewares");
-
+let imgFileName = ""
 let storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'public/imgs')
 	},
 	filename: function (req, file, cb) {
-		cb(null, Date.now() + '-' + file.originalname)
+		imgFileName = Date.now() + '-' + file.originalname.replace(" ", "-")
+		cb(null, imgFileName)
 	}
 })
 
@@ -35,11 +36,11 @@ router.get("/", async (req, res) => {
 		console.log("Listando los productos, usar psotman para ver los resultados")
 		res.render('productList', { suggestedChamps: JSON.parse(allProducts), listExists: true })
 		// res.status(200).send(JSON.parse(allProducts))
-		
+
 	} catch (error) {
-		res.render('productList', { listExists:false })
+		res.render('productList', { listExists: false })
 		// res.status(400).send(`Error al recuperar los datos ${error}`)
-		
+
 		return []
 	}
 });
@@ -81,7 +82,7 @@ router.post("/", [upload.single('thumbnail'), isEmpty, isBodyOk, isPriceNumber],
 		newId = lastId + 1
 	}
 	let arr = JSON.parse(productos)
-	arr.push({ ...product, id: newId, thumbnail: file.originalname })
+	arr.push({ ...product, id: newId, thumbnail: imgFileName })
 	try {
 		await fs.writeFile("./files/productos.txt", JSON.stringify(arr, null, 2))
 		res.status(200).send(`Se ha creado el producto con id:${newId}`)

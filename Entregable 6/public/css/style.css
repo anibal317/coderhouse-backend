@@ -33,10 +33,10 @@ table td:last-child{
 }
 
 .imgLogo{
-    width: 10% !important;
+    width: 20% !important;
 }
 .bi{
-    width: 15% !important;
+    width: 20% !important;
 }
 a,a:visited{
     color:white;
@@ -47,10 +47,4 @@ a:hover{
 }
 .navbar-brand, .navbar-brand:visited, .nav-link:visited{
     color:black;
-}
-
-.imgNav{
-    position: relative;
-    margin-right: -500%;
-    width: -55500rem;
 }
