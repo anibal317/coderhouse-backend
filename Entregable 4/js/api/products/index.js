@@ -106,6 +106,7 @@ router.put("/:id", [], async (req, res) => {
 	}
 });
 
+
 router.delete("/:id", [isNumber], async (req, res) => {
 	let productId = req.params.id
 

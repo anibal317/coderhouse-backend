@@ -1,6 +1,7 @@
 const express = require('express');
 const {engine} = require('express-handlebars');
 const products = require('./api/products');
+const messages = require('./api/messages');
 const { Server: HttpServer } = require('http')
 const { Server: IOServer } = require('socket.io')
 
@@ -31,6 +32,7 @@ app.use(express.static('public/js'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/products', products);
+app.use('/api/messages', messages);
 
 app.get('/', (req, res) => {
     res.render('productos', { 
