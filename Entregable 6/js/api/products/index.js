@@ -24,12 +24,7 @@ let storage = multer.diskStorage({
 let upload = multer({ storage: storage })
 
 
-
-
-
 router.get("/", async (req, res) => {
-	// res.render('productos', { nombre: 'jorge', apellido: 'sardon' })
-
 	console.log("Listando todos los productos")
 	try {
 		const allProducts = await fs.readFile("./files/productos.txt", 'utf-8')
@@ -47,7 +42,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", [isNumber], async (req, res) => {
 	let productId = parseInt(req.params.id)
-	console.log(`Listando el producto  id:${productId}`)
+	console.log(`Listando el producto  => id:${productId}`)
 	try {
 		const objetos = await fs.readFile("./files/productos.txt", 'utf-8')
 		let allProducts = await JSON.parse(objetos)
@@ -63,6 +58,7 @@ router.get("/:id", [isNumber], async (req, res) => {
 });
 
 router.post("/", [upload.single('thumbnail'), isEmpty, isBodyOk, isPriceNumber], async (req, res) => {
+	console.log("Agregando un producto")
 	let product = req.body
 	const file = req.file
 	if (!file) {
@@ -71,7 +67,6 @@ router.post("/", [upload.single('thumbnail'), isEmpty, isBodyOk, isPriceNumber],
 		return next(error)
 	}
 	delete product.submit;
-	console.log("Agregando un producto")
 	const productos = await fs.readFile("./files/productos.txt", 'utf-8')
 
 	let newId
@@ -94,7 +89,7 @@ router.post("/", [upload.single('thumbnail'), isEmpty, isBodyOk, isPriceNumber],
 router.put("/:id", [], async (req, res) => {
 	let productId = parseInt(req.params.id)
 	let newData = req.body
-	console.log(`Editando el producto  id:${productId}`)
+	console.log(`Editando el producto  => id:${productId}`)
 	try {
 		const objetos = await fs.readFile("./files/productos.txt", 'utf-8')
 		let allProducts = await JSON.parse(objetos)
@@ -114,6 +109,7 @@ router.put("/:id", [], async (req, res) => {
 
 router.delete("/:id", [isNumber], async (req, res) => {
 	let productId = req.params.id
+	console.log(`Borrando el producto => id: ${productId}`)
 
 	try {
 		const objetos = await fs.readFile("./files/productos.txt", "utf-8")
