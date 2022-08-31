@@ -80,7 +80,8 @@ router.post("/", [upload.single('thumbnail'), isEmpty, isBodyOk, isPriceNumber],
 	arr.push({ ...product, id: newId, thumbnail: imgFileName })
 	try {
 		await fs.writeFile("./files/productos.txt", JSON.stringify(arr, null, 2))
-		res.status(200).send(`Se ha creado el producto con id:${newId}`)
+		// res.status(200).send(`Se ha creado el producto con id:${newId}`)
+		res.render('endTransaction', { dato: `Se ha creado el producto con id:${newId}` })
 	} catch (error) {
 		res.status(400).send(`Error al procesar: ${error}`)
 	}
