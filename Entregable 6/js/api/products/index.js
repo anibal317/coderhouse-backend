@@ -17,12 +17,10 @@ let storage = multer.diskStorage({
 	},
 	filename: function (req, file, cb) {
 		imgFileName = Date.now() + '-' + file.originalname.replace(" ", "-")
-		cb(null, imgFileName)
+		cb(null, imgFileName.replace(" ", "-"))
 	}
 })
-
 let upload = multer({ storage: storage })
-
 
 router.get("/", async (req, res) => {
 	console.log("Listando todos los productos")
@@ -77,7 +75,7 @@ router.post("/", [upload.single('thumbnail'), isEmpty, isBodyOk, isPriceNumber],
 		newId = lastId + 1
 	}
 	let arr = JSON.parse(productos)
-	arr.push({ ...product, id: newId, thumbnail: imgFileName })
+	arr.push({ ...product, id: newId, thumbnail: imgFileName.replace(" ", "-") })
 	try {
 		await fs.writeFile("./files/productos.txt", JSON.stringify(arr, null, 2))
 		// res.status(200).send(`Se ha creado el producto con id:${newId}`)

@@ -22,7 +22,7 @@
               <label class="form-label" for="inputPrice">
                 Price
               </label>
-              <input class="form-control" type="number" name="price" id="inputPrice" placeholder="" step="0.01"/>
+              <input class="form-control" type="number" name="price" id="inputPrice" placeholder="" step="any"/>
             </div>
             <div class="mb-3">
               <label class="form-label" for="inputThumbnail">
@@ -70,7 +70,7 @@
           {{this.title}}
         </td>
         <td>
-          {{this.price}}
+          ${{this.price}}
         </td>
         <td>
           <img src={{this.thumbnail}} />
