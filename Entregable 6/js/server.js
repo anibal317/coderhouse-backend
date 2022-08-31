@@ -10,18 +10,6 @@ const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer);
 
 
-io.on('connection', socket=>{
-    console.log("Nuevo Cliente conectado!");
-
-    socket.on('mensajeEnviado', (mensajes)=>{
-        io.sockets.emit("mensajesRecibidos", mensajes)
-    })
-})
-
-
-
-
-
 app.engine('handlebars', engine())
 app.set("view engine", "handlebars");
 app.set("views", "./views")
@@ -53,5 +41,26 @@ app.listen(3000, () => {
 const connectedServer = httpServer.listen(8080,()=>{
     console.log('Servidor HTTP con WebSocket listo')
 })
+
+let allMessages =[]
+
+io.on('connection', socket=>{
+    console.log("Nuevo Cliente conectado!");
+
+    socket.on('new-message', (msgContent)=>{
+        console.log("Mostrando el nuevo contenido del mensaje")
+        console.log(msgContent)
+        allMessages.push(msgContent)
+        
+        //todos los mensajes
+        console.log(allMessages)
+        io.sockets.emit("newChatMessage", allMessages)
+    })
+    // socket.on('mensajeEnviado', (mensajes)=>{
+    //     io.sockets.emit("mensajesRecibidos", mensajes)
+    // })
+})
+
+
 
 connectedServer.on('err',(err)=>{console.log(err)})
