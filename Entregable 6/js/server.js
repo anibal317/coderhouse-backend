@@ -1,5 +1,5 @@
 const express = require('express');
-const {engine} = require('express-handlebars');
+const { engine } = require('express-handlebars');
 const products = require('./api/products');
 const messages = require('./api/messages');
 const { Server: HttpServer } = require('http')
@@ -23,39 +23,39 @@ app.use('/api/products', products);
 app.use('/api/messages', messages);
 
 app.get('/', (req, res) => {
-    res.render('productos', { 
+    res.render('productos', {
         service1: "Alta de productos",
         service2: "Alta de proveedores",
-        service3:"Seguimiento de pedidos"
-     })
+        service3: "Seguimiento de pedidos"
+    })
 })
+
 app.get('/chat', (req, res) => {
-    res.render('chat', { 
+    res.render('chat', {
         message: "Chatea con uno de nuestros operadores",
-     })
+    })
 })
+
 app.listen(3000, () => {
     console.log('Servidor iniciado... http://localhost:3000');
 });
 
-const connectedServer = httpServer.listen(8080,()=>{
+const connectedServer = httpServer.listen(8080, () => {
     console.log('Servidor HTTP con WebSocket listo')
 })
 
-let allMessages =[]
+let allMessages = []
 
-io.on('connection', socket=>{
+io.on('connection', socket => {
     console.log("Nuevo Cliente conectado!");
 
-    socket.on('new-message', (msgContent)=>{
-        console.log("Mostrando el nuevo contenido del mensaje")
-        console.log(msgContent)
+    socket.emit('newChatMessage', allMessages)
+    
+    socket.on('new-message', (msgContent) => {
         allMessages.push(msgContent)
-        
-        //todos los mensajes
-        console.log(allMessages)
         io.sockets.emit("newChatMessage", allMessages)
     })
+    
     // socket.on('mensajeEnviado', (mensajes)=>{
     //     io.sockets.emit("mensajesRecibidos", mensajes)
     // })
@@ -63,4 +63,4 @@ io.on('connection', socket=>{
 
 
 
-connectedServer.on('err',(err)=>{console.log(err)})
+connectedServer.on('err', (err) => { console.log(err) })

@@ -33,7 +33,7 @@ function addMessage(e){
 
 function renderMessage(allMessages) {
     const contentHTML = allMessages.map((elem,index)=>{
-        return (`<div>
+        return (`<div style="color: white;">
                     <strong>${elem.author}</strong>: ${elem.text}<em></em>
                  </div>`)
     }).join(" ");
