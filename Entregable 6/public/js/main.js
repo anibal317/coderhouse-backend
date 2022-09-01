@@ -7,6 +7,13 @@ const textMessage = document.getElementById('textAreaTexto')
 const textMessageContainer = document.getElementById('message-container')
 
 
+
+// crea un nuevo objeto `Date`
+var today = new Date();
+ 
+// obtener la fecha y la hora
+var now = today.toLocaleString();
+
 inputMessage?.addEventListener('input', () => {
     socket.emit("mensajeEnviado", inputMessage.value)
 })
@@ -22,7 +29,8 @@ socket.on('newChatMessage', (mensajes) => {
 function addMessage(e){
     const message = {
         author: author.value,
-        text: textMessage.value
+        text: textMessage.value,
+        time:now
     }
     socket.emit('new-message', message)
     console.log(message)
@@ -34,7 +42,9 @@ function addMessage(e){
 function renderMessage(allMessages) {
     const contentHTML = allMessages.map((elem,index)=>{
         return (`<div style="color: white;">
-                    <strong>${elem.author}</strong>: ${elem.text}<em></em>
+                    <p style="color:pink";><strong>${elem.author}</strong> 
+                    <span style="color:red;">[</span><span style="color:yellow;">${elem.time}</span><span style="color:red;">]</span>: 
+                    <em><span style="color:brown;">${elem.text}</span></em></p>
                  </div>`)
     }).join(" ");
     // console.log("Sale?",contentHTML)
