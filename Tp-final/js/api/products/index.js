@@ -27,8 +27,7 @@ router.get("/", async (req, res) => {
 	try {
 		const allProducts = await fs.readFile("./files/productos.txt", 'utf-8')
 		console.log("Listando los productos, usar psotman para ver los resultados")
-		res.render('productList', { suggestedChamps: JSON.parse(allProducts), listExists: true })
-		// res.status(200).send(JSON.parse(allProducts))
+		res.status(200).send(JSON.parse(allProducts))
 
 	} catch (error) {
 		res.render('productList', { listExists: false })

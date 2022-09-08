@@ -6,14 +6,17 @@ const products = require('./api/products');
 
 const app = express();
 
+
+app.get("*", function(req,res){
+    res.location(`localhost:${process.env.SERVER_PORT}/sections/404/404productlist.html`);
+  });
+
 app.use(express.static("public"))
 app.use(express.static('public/imgs'));
 app.use(express.static('public/js'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/products', products);
-
-
 
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`Servidor iniciado... http://localhost:${process.env.SERVER_PORT}`);
