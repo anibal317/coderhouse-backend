@@ -1,44 +1,51 @@
 [
   {
-    "title": "Escuadra",
+    "name": "Escuadra",
     "price": 123.45,
+    "description":"loremipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid",
     "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png",
     "id": 1
   },
   {
-    "title": "Calculadora",
+    "name": "Calculadora",
     "price": 234.56,
+    "description":"loremipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid",
     "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png",
     "id": 2
   },
   {
-    "title": "Globo Terráqueo",
+    "name": "Globo Terráqueo",
     "price": 345.67,
+    "description":"loremipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid",
     "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png",
     "id": 3
   },
   {
-    "title": "Cartuchera",
+    "name": "Cartuchera",
     "price": 100.25,
+    "description":"loremipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid",
     "thumbnail": "https://cdn-icons-png.flaticon.com/512/4100/4100658.png",
     "id": 4
   },
   {
-    "title": "Set de 3 cuadernos",
+    "name": "Set de 3 cuadernos",
     "price": "1550.2",
+    "description":"loremipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid",
     "id": 5,
     "thumbnail": "1661984749237-Cuadernos-3-unidades.jpg"
   },
   {
-    "title": "Tijera",
+    "name": "Tijera",
     "price": "125",
     "id": 6,
+    "description":"loremipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid",
     "thumbnail": "1661984816625-tijera.jpg"
   },
   {
-    "title": "Set de escuadras por 3 unidades",
+    "name": "Set de escuadras por 3 unidades",
     "price": "1500",
     "id": 7,
+    "description":"loremipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid",
     "thumbnail": "1661985267308-escuadras-3-unidades.jpg"
   }
 ]

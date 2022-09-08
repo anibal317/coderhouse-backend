@@ -10,14 +10,13 @@ const textMessageContainer = document.getElementById('message-container')
 
 // crea un nuevo objeto `Date`
 var today = new Date();
- 
+
 // obtener la fecha y la hora
 var now = today.toLocaleString();
 
 inputMessage?.addEventListener('input', () => {
     socket.emit("mensajeEnviado", inputMessage.value)
 })
-
 
 socket.on('newChatMessage', (mensajes) => {
     renderMessage(mensajes)
