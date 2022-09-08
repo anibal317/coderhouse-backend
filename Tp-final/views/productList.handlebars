@@ -1,0 +1,88 @@
+{{>navbar}}
+<div class="formProduct container border border-radius border-3 mb-3">
+  <div class="container-fluid accordion mb-3 mt-3" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+          aria-expanded="true" aria-controls="collapseOne">
+          Agregar un nuevoproducto
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+        data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <form action="/api/products" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label class="form-label" for="inputName">
+                Title
+              </label>
+              <input class="form-control" type="text" name="title" id="inputName" placeholder="" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="inputPrice">
+                Price
+              </label>
+              <input class="form-control" type="number" name="price" id="inputPrice" placeholder="" step="any"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="inputThumbnail">
+                Thumbnail
+              </label>
+              <input class="form-control" type="file" name="thumbnail" id="inputThumbnail" placeholder="" />
+            </div>
+            <div class="mb-3 text-center">
+              <input class="btn btn-primary" type="submit" name="submit" id="submit" value="Guardar" />
+              <input class="btn btn-danger" type="reset" name="cancel" id="cancel" value="Cancelar" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="table-container container border border-radius border-3">
+  {{#if listExists}}
+  <table class="table table-striped table-dark table-hover align-middle table-condensed">
+    <thead>
+      <tr>
+        <th>
+          #Id
+        </th>
+        <th>
+          Name
+        </th>
+        <th>
+          Pricing
+        </th>
+        <th>
+          Photo
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each suggestedChamps}}
+      <tr>
+        <td>
+          {{this.id}}
+        </td>
+        <td>
+          {{this.title}}
+        </td>
+        <td>
+          ${{this.price}}
+        </td>
+        <td>
+          <img src={{this.thumbnail}} />
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  <p>
+    No Hay productos
+  </p>
+  {{/if}}
+</div>
+{{>footer}}
