@@ -1,8 +1,6 @@
 const app = require("express");
 const router = app.Router();
 const { promises: fs } = require('fs');
-const multer = require('multer')
-const { createRandomPwd } = require('../../../public/js/utils/functions')
 
 const {
     isNumber,
@@ -11,18 +9,15 @@ const {
     isPriceNumber,
     verifyProperties
 } = require("../../middlewares");
-let imgFileName = ""
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/imgs')
-    },
-    filename: function (req, file, cb) {
-        imgFileName = Date.now() + '-' + file.originalname.replace(" ", "-")
-        cb(null, imgFileName.replace(" ", "-"))
-    }
-})
 
-let upload = multer({ storage: storage })
+
+
+let cartTemp=[
+    {
+        name:"Test",
+        title: "lorem-ipsum.lin"
+    }
+]
 
 router.get("/", async (req, res) => {
     console.log("Usuarios")
@@ -36,7 +31,6 @@ router.get("/", async (req, res) => {
             delete el.userName
             delete el.pwd
         })
-        console.log(allUserList)
     	res.status(200).send(allUserList)
 
     } catch (error) {
@@ -64,7 +58,7 @@ router.get("/:id", [isNumber], async (req, res) => {
     // }
 });
 
-router.post("/", [upload.single('thumbnail'), isEmpty, isBodyOk, isPriceNumber], async (req, res) => {
+router.post("/", [isEmpty, isBodyOk, isPriceNumber], async (req, res) => {
     // console.log("Agregando un producto")
     // let product = req.body
     // const file = req.file

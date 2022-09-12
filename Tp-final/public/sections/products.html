@@ -31,12 +31,26 @@
                         <a class="nav-link" href="/sections/products.html">Alta de productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Alta de proveedores</a>
+                        <a class="nav-link" href="/api/cart">My cart</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <section class="container addProductSection">
+        <div class="addProduct">
+            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> -->
+            <button type="button" class="btn btn-primary addProdcut" data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop">
+                <img class="addProductIcon" src="../imgs/add-icon.png" alt="" srcset="">
+                <!-- Agregar</button> -->
+                <!-- Button trigger modal -->
+                Agregar producto
+            </button>
+
+        </div>
+    </section>
 
     <!-- content -->
     <section class="container px-4 py-5" id="custom-cards">
@@ -45,7 +59,8 @@
             Nuestros Productos
         </h2>
 
-        <article class="container d-flex p-2 -grid gap-3 border border-danger justify-content-between flex-wrap" id="lstProducts">
+        <article class="container d-flex p-2 -grid gap-3 border border-danger justify-content-between flex-wrap"
+            id="lstProducts">
 
             <!-- card template -->
             <div class="card" style="width: 18rem;">
@@ -64,10 +79,77 @@
                     <hr>
                 </div>
             </div>
-
         </article>
-
     </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <form action="/api/products" method="post" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label class="form-label" for="inputName">
+                                        Title
+                                    </label>
+                                    <input class="form-control" type="text" name="title" id="inputName" placeholder=""
+                                        required />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="inputName">
+                                        Desctiption
+                                    </label>
+                                    <input class="form-control" type="text" name="title" id="inputDescription"
+                                        placeholder="" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="inputPrice">
+                                        Price
+                                    </label>
+                                    <input class="form-control" type="number" name="price" id="inputPrice"
+                                        placeholder="" step="any" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="inputThumbnail">
+                                        Thumbnail
+                                    </label>
+                                    <input class="form-control" type="url" name="thumbnail" id="inputThumbnail"
+                                        placeholder="http://" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="inputThumbnail">
+                                        Stock
+                                    </label>
+                                    <input class="form-control" type="number" name="thumbnail" id="inputStock"
+                                        placeholder="" required />
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <input class="btn btn-primary" type="submit" name="submit" id="submit"
+                                        value="Guardar" />
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- footer -->
     <footer class="py-3 my-4">
@@ -106,8 +188,14 @@
             </p>
         </div>
     </footer>
-    <script src="../js/products.js" type="module"></script>
+
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
     <script src="../js/productsDomElements.js" type="module"></script>
+    <script src="../js/products.js" type="module"></script>
 </body>
 
 </html>

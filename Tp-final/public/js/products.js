@@ -6,13 +6,11 @@ import { productContainer } from '../js/productsDomElements.js'
 fetch(getAllProducts)
     .then(res => res.json())
     .then(data => {
-        productContainer.innerHTML=""
-        data.forEach(product=>{
-            productContainer.innerHTML+=renderListProduct(product)
+        productContainer.innerHTML = ""
+        data.forEach(product => {
+            productContainer.innerHTML += renderListProduct(product)
         })
     })
-
-
 
 function renderListProduct(lstProducts) {
     let htmlTemplate = `
@@ -29,7 +27,9 @@ function renderListProduct(lstProducts) {
                         <p class="card-text">Stock: ${lstProducts.stock} unidad/es</p>
                         <hr>
                         <div class="text-center">
-                            <a href="#" class="btn btn-primary text-center">Comprar</a>
+                            <label class="" for="quantity">Quantity</label>
+                            <input type="number" class="" name="quantity">
+                            <button class="btn btn-primary text-center mt-2" data-id=${lstProducts.id} data-price=${lstProducts.price} id="btnBuyProduct">Comprar</button>
                         </div>
                         <hr>
                     </div>
