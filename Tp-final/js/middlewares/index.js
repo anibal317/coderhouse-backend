@@ -9,7 +9,6 @@ function isNumber(req, res, next) {
 
 function isEmpty(req, res, next) {
     let data = req.body
-    console.log(data)
 
     if (Object.entries(data).length === 0) {
         res.status(400).send({ message: "Sin datos en el body" })
