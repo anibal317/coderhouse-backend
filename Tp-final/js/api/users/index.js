@@ -11,35 +11,47 @@ const {
 } = require("../../middlewares");
 
 
-
-let cartTemp=[
-    {
-        name:"Test",
-        title: "lorem-ipsum.lin"
-    }
-]
-
 router.get("/", async (req, res) => {
     console.log("Usuarios")
     // res.status(200).send(createRandomPwd())
     try {
-    	// console.log("Listando los usuarios, usar postman para ver los resultados")
-    	
+        // console.log("Listando los usuarios, usar postman para ver los resultados")
+
         const allusers = await fs.readFile("./files/userList.txt", 'utf-8')
         const allUserList = JSON.parse(allusers)
-        allUserList.map(el=>{
+        allUserList.map(el => {
             delete el.userName
             delete el.pwd
         })
-    	res.status(200).send(allUserList)
+        res.status(200).send(allUserList)
 
     } catch (error) {
-    	// res.render('productList', { listExists: false })
-    	res.status(400).send(`Error al recuperar los datos ${error}`)
+        // res.render('productList', { listExists: false })
+        res.status(400).send(`Error al recuperar los datos ${error}`)
 
-    	return []
+        return []
     }
 });
+
+router.post("/login", async (req, res) => {
+    console.log("login")
+    console.log(req.body.user)
+    try {
+        const allusers = await fs.readFile("./files/userList.txt", 'utf-8')
+        const allUserList = JSON.parse(allusers)
+        console.log(allUserList)
+        const user = allUserList.find(el => { el.userName === "admin" && el.pwd === "admin" })
+        res.status(200).send(user)
+
+    } catch (error) {
+        // res.render('productList', { listExists: false })
+        res.status(400).send(`Error al recuperar los datos ${error}`)
+
+        return []
+    }
+});
+
+
 
 router.get("/:id", [isNumber], async (req, res) => {
     // let productId = parseInt(req.params.id)
