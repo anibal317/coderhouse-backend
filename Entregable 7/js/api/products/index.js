@@ -138,8 +138,8 @@ router.post('/new/j', async function (req, res) {
 		price: 123.45,
 		stock:10
 	}
-	console.log(csql.insertData())
-	// csql.selectDataById(1)
-	// console.log("Resultado", await csql.selectDataById(6).then(rows=>rows))
+	// console.log(csql.insertData())
+	// csql.selectData()
+	console.log("Resultado", await csql.selectData().then(rows=>rows))
 })
 module.exports = router;
