@@ -3,7 +3,7 @@ const router = app.Router();
 const { promises: fs } = require('fs');
 const multer = require('multer')
 
-const {clienteSQL} = require("../../clienteSQL.js");
+const { clienteSQL } = require("../../clienteSQL.js");
 const { options } = require("../../options/index.js");
 
 const csql = new clienteSQL()
@@ -127,9 +127,19 @@ router.delete("/:id", [isNumber], async (req, res) => {
 	}
 });
 
-router.get('/new/j', async function (req, res) {
+router.post('/new/j', async function (req, res) {
 	console.log("Creando base")
-	// res.send("Saludos")
-	csql.createTable('products')
+	res.send("Saludos")
+	// csql.createTable()
+	let prod = {
+		id: 2,
+		title: "Escuadra",
+		thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png",
+		price: 123.45,
+		stock:10
+	}
+	console.log(csql.insertData())
+	// csql.selectDataById(1)
+	// console.log("Resultado", await csql.selectDataById(6).then(rows=>rows))
 })
 module.exports = router;

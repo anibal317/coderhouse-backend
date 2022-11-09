@@ -15,6 +15,7 @@ app.set("view engine", "handlebars");
 app.set("views", "./views")
 
 app.use(express.static("public"))
+app.use(express.static("src/"))
 app.use(express.static('public/imgs'));
 app.use(express.static('public/js'));
 app.use(express.json())

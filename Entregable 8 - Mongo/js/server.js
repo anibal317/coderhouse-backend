@@ -16,6 +16,7 @@ app.set("views", "./views")
 
 app.use(express.static("public"))
 app.use(express.static('public/imgs'));
+app.use(express.static('public/database'));
 app.use(express.static('public/js'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));

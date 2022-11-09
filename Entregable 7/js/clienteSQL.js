@@ -3,7 +3,7 @@ const knexLib = require("knex");
 const options = {
     client: 'sqlite3', // or 'better-sqlite3'
     connection: {
-        filename: "../database/ecommerce.sqlite3"
+        filename: "./ecommerce.sqlite"
     }
 }
 //     this.knex = knexLib(options);
@@ -16,8 +16,8 @@ const clienteSQL = class ClienteSQL {
     }
 
     createTable() {
-        return this.knex.schema.dropTableIfExists("tblName").finally(() => {
-            return this.knex.schema.createTable("tblName", table => {
+        return this.knex.schema.dropTableIfExists("articulos").finally(() => {
+            return this.knex.schema.createTable("articulos", table => {
                 table.increments('id');
                 table.string('title', 15).notNullable();
                 table.string('thumbnail', 255).notNullable();
@@ -28,17 +28,29 @@ const clienteSQL = class ClienteSQL {
     }
 
     insertData(data) {
-        return this.knex('articulos').insert(data)
+        // console.log(data, "datos")
+        return this.knex('articulos').insert([{
+            id: 2,
+            title: "Escuadra",
+            thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png",
+            price: 123.45,
+            stock:10
+        },{
+            id: 3,
+            title: "Escuadra",
+            thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png",
+            price: 123.45,
+            stock:10
+        }
+    ])
     }
 
     selectData() {
-        return this.knex('articulos').select('*').from('articulos').then(rows => rows)
+        return this.knex('articulos').select('*').from('articulos').then(rows=>rows)
     }
 
     selectDataById(id) {
-        return this.knex('articulos').select('*').from('articulos').where('id', id).then(rows => {
-            console.log(rows)
-        })
+        return this.knex('articulos').select('*').from('articulos').where('id', id).then(rows => rows)
     }
 
     deleteData(id) {

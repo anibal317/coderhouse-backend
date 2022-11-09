@@ -3,7 +3,7 @@ const knexLib = require("knex");
 const options = {
     client: 'sqlite3', // or 'better-sqlite3'
     connection: {
-        filename: "../database/ecommerce.sqlite3"
+        filename: "../public/database/ecommerce.sqlite3"
     }
 }
 //     this.knex = knexLib(options);
@@ -15,9 +15,10 @@ const clienteSQL = class ClienteSQL {
         this.knex = knexLib(options);
     }
 
-    createTable() {
-        return this.knex.schema.dropTableIfExists("tblName").finally(() => {
-            return this.knex.schema.createTable("tblName", table => {
+    createTable(tbl) {
+        console.log(tbl)
+        return this.knex.schema.dropTableIfExists(tbl).finally(() => {
+            return this.knex.schema.createTable(tbl, table => {
                 table.increments('id');
                 table.string('title', 15).notNullable();
                 table.string('thumbnail', 255).notNullable();
@@ -28,7 +29,7 @@ const clienteSQL = class ClienteSQL {
     }
 
     insertData(data) {
-        return this.knex('articulos').insert(data)
+        return this.knex(tbl).insert(data)
     }
 
     selectData() {
