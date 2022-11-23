@@ -9,6 +9,9 @@ const app = express();
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer);
 
+const quip = require('quip'); // the culprit
+
+app.use(quip);
 
 app.engine('handlebars', engine())
 app.set("view engine", "handlebars");

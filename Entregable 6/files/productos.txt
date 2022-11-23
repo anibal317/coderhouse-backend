@@ -26,19 +26,19 @@
   {
     "title": "Set de 3 cuadernos",
     "price": "1550.2",
-    "id": 5,
-    "thumbnail": "1661984749237-Cuadernos-3-unidades.jpg"
+    "thumbnail": "1661984749237-Cuadernos-3-unidades.jpg",
+    "id": 5
   },
   {
     "title": "Tijera",
     "price": "125",
-    "id": 6,
-    "thumbnail": "1661984816625-tijera.jpg"
+    "thumbnail": "1661984816625-tijera.jpg",
+    "id": 6
   },
   {
     "title": "Set de escuadras por 3 unidades",
     "price": "1500",
+    "thumbnail": "1661985267308-escuadras-3-unidades.jpg",
     "id": 7,
-    "thumbnail": "1661985267308-escuadras-3-unidades.jpg"
   }
 ]

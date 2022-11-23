@@ -4,7 +4,8 @@ const options = {
     client: 'sqlite3', // or 'better-sqlite3'
     connection: {
         filename: "./ecommerce.sqlite"
-    }
+    },
+    useNullAsDefault: true
 }
 //     this.knex = knexLib(options);
 
@@ -28,25 +29,13 @@ const clienteSQL = class ClienteSQL {
     }
 
     insertData(data) {
-        // console.log(data, "datos")
-        return this.knex('articulos').insert([{
-            id: 2,
-            title: "Escuadra",
-            thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png",
-            price: 123.45,
-            stock:10
-        },{
-            id: 3,
-            title: "Escuadra",
-            thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png",
-            price: 123.45,
-            stock:10
-        }
-    ])
+        return this.knex('articulos')
+            .returning(['id', 'title'])
+            .insert(data)
     }
 
     selectData() {
-        return this.knex('articulos').select('*').from('articulos').then(rows=>rows)
+        return this.knex('articulos').select('*').from('articulos').then(rows => rows)
     }
 
     selectDataById(id) {
@@ -54,7 +43,8 @@ const clienteSQL = class ClienteSQL {
     }
 
     deleteData(id) {
-        return this.knex('articulos').where(id).del()
+        console.log(id)
+        return this.knex('articulos').where({'id':id}).del()
     }
 
     updateData(id, data) {
