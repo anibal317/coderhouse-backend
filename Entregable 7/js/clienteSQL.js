@@ -43,12 +43,15 @@ const clienteSQL = class ClienteSQL {
     }
 
     deleteData(id) {
-        console.log("en la api",id)
-        return this.knex('articulos').where('id',id).del()
+        // console.log("en la api",id)
+        return this.knex('articulos').where({id}).del()
+        //         knex('accounts')
+        //   .where('activated', false)
+        //   .del()
     }
 
     updateData(id, data) {
-        return this.knex('articulos').where(id).update(data)
+        return this.knex('articulos').where({id}).update(data)
     }
 
     close() {

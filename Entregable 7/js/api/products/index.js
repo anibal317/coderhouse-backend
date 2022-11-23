@@ -71,28 +71,41 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-	
+	let productId = req.params.id
+	let productData = req.body
 	try {
-		const objetos = await fs.readFile("./files/productos.txt", 'utf-8')
-		let allProducts = await JSON.parse(objetos)
-		let oneProduct = await allProducts.find(element => element.id === productId)
-
-		Object.keys(newData).forEach((key) => {
-			oneProduct[key] === undefined ? null : oneProduct[key] = newData[key]
-		})
-		await fs.writeFile("./files/productos.txt", JSON.stringify(allProducts, null, 2))
-
-		res.status(200).send("sale")
+		if (await csql.updateData(productId, productData) > 0) {
+			res.status(200).send({
+				message: "Se han actualiado los datos"
+			})
+		} else {
+			res.status(204).send({
+				message: "No se han encontrado datos"
+			})
+		}
 
 	} catch (error) {
 		res.status(400).send(`Error en consultar los datos ${error}`)
 	}
 });
 
-router.delete("/:id",async (req, res) => {
+router.delete("/:id", async (req, res) => {
 	let productId = parseInt(req.params.id)
 	console.log(`Borrando el producto => id: ${productId}`)
-	csql.deleteData(productId)
+	try {
+		if (await csql.deleteData(productId) > 0) {
+			res.status(200).send({ message: `El item ${productId} fue eliminado` })
+		} else {
+			res.status(204).send({ message: `No hay registros bajo el id ${productId} ` })
+
+		}
+	} catch (error) {
+		res.status(400).send(`Error al procesar: ${error}`)
+
+	}
+
+	let a =
+		console.log(a)
 	res.send("Salio")
 	// try {
 	// 	res.status(400).send(csql.deleteData(13))
