@@ -70,7 +70,7 @@ router.post("/", async (req, res) => {
 	}
 });
 
-router.put("/:id", [], async (req, res) => {
+router.put("/:id", async (req, res) => {
 	
 	try {
 		const objetos = await fs.readFile("./files/productos.txt", 'utf-8')
@@ -89,15 +89,16 @@ router.put("/:id", [], async (req, res) => {
 	}
 });
 
-router.delete("/:id", [isNumber], async (req, res) => {
+router.delete("/:id",async (req, res) => {
 	let productId = parseInt(req.params.id)
 	console.log(`Borrando el producto => id: ${productId}`)
-
-	try {
-		res.status(400).send(csql.deleteData(13))
-	} catch (error) {
-		res.status(400).send(`Error al eliminar el producto ${error}`)
-	}
+	csql.deleteData(productId)
+	res.send("Salio")
+	// try {
+	// 	res.status(400).send(csql.deleteData(13))
+	// } catch (error) {
+	// 	res.status(400).send(`Error al eliminar el producto ${error}`)
+	// }
 });
 
 
