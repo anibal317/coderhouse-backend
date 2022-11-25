@@ -8,6 +8,8 @@ const textMessageContainer = document.getElementById('message-container')
 
 
 
+
+
 // crea un nuevo objeto `Date`
 var today = new Date();
  
@@ -28,6 +30,7 @@ socket.on('newChatMessage', (mensajes) => {
 
 function addMessage(e){
     const message = {
+        id:null,
         author: author.value,
         text: textMessage.value,
         time:now
@@ -38,6 +41,7 @@ function addMessage(e){
     textMessage.value = ""
     return false
 }
+
 
 function renderMessage(allMessages) {
     const contentHTML = allMessages.map((elem,index)=>{

@@ -6,6 +6,8 @@ const { Server: HttpServer } = require('http')
 const { Server: IOServer } = require('socket.io')
 const bodyParser = require('body-parser');
 
+const { clienteSQL } = require("./clienteSQLForMessages");
+const csql = new clienteSQL()
 
 const app = express();
 const httpServer = new HttpServer(app)
@@ -50,19 +52,23 @@ app.listen(3000, () => {
 });
 
 const connectedServer = httpServer.listen(8080, () => {
-    console.log('Servidor HTTP con WebSocket listo')
+    console.log('Servidor HTTP con WebSocket listo... http://localhost:8080')
 })
 
 let allMessages = []
 
-io.on('connection', socket => {
-    console.log("Nuevo Cliente conectado!");
 
-    socket.emit('newChatMessage', allMessages)
+
+io.on('connection', async socket => {
+    console.log("Nuevo Cliente conectado!");
     
-    socket.on('new-message', (msgContent) => {
-        allMessages.push(msgContent)
-        io.sockets.emit("newChatMessage", allMessages)
+    socket.emit('newChatMessage', await csql.selectData())
+    
+    socket.on('new-message', async (msgContent) => {
+        // allMessages.push(msgContent)
+        // console.log(await csql.selectData())
+        await csql.insertData(msgContent)
+        io.sockets.emit("newChatMessage",await  csql.selectData())
     })
     
     // socket.on('mensajeEnviado', (mensajes)=>{

@@ -5,4 +5,11 @@ const options = {
   }
 }
 
-module.exports = { options };
+const msgOptions = {
+  client: 'sqlite3',
+  connection: {
+    filename: "./messages.sqlite"
+  }
+}
+
+module.exports = { options,msgOptions };

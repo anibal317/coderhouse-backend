@@ -3,7 +3,7 @@ const router = app.Router();
 const multer = require('multer')
 
 const { clienteSQL } = require("../../clienteSQL.js");
-const { options } = require("../../options/index.js");
+const { options,msgOptions } = require("../../options/index.js");
 
 const csql = new clienteSQL()
 
