@@ -1,6 +1,5 @@
 const app = require("express");
 const router = app.Router();
-const { promises: fs } = require('fs');
 const multer = require('multer')
 
 const { clienteSQL } = require("../../clienteSQL.js");
@@ -8,14 +7,6 @@ const { options } = require("../../options/index.js");
 
 const csql = new clienteSQL()
 
-
-const {
-	isNumber,
-	isEmpty,
-	isBodyOk,
-	isPriceNumber,
-	verifyProperties
-} = require("../../middlewares");
 let imgFileName = ""
 let storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -28,17 +19,18 @@ let storage = multer.diskStorage({
 })
 let upload = multer({ storage: storage })
 
+
 router.get("/", async (req, res) => {
 	try {
 		console.log("Consultando datos")
-		res.send(await csql.selectData())
-
+		// res.send(await csql.selectData())
+		res.render('productList', { suggestedChamps: await csql.selectData(), listExists: true })
 	} catch (error) {
 		res.status(400).send(`Error en consultar los datos ${error}`)
 	}
 });
 
-router.get("/:id", [isNumber], async (req, res) => {
+router.get("/:id", async (req, res) => {
 	let productId = parseInt(req.params.id)
 	let resData = await csql.selectDataById(productId)
 	console.table(resData.length)
@@ -53,13 +45,24 @@ router.get("/:id", [isNumber], async (req, res) => {
 	}
 });
 
-router.post("/", async (req, res) => {
+router.post("/", upload.single('thumbnail'), async (req, res) => {
 	console.log("Agregando un producto")
+	let reqData = req.body
+	const file = req.file
 
+	if (!file) {
+		const error = new Error('Please upload a file')
+		error.httpStatusCode = 400
+		return next(error)
+	}
+	delete reqData.submit;
+	let newProd = { ...reqData, thumbnail: imgFileName.replace(" ", "-") }
+	console.log(newProd)
 	try {
-		let reqData = req.body
 		if (Object.keys(reqData).length !== 0) {
-			res.status(201).send(await csql.insertData(reqData))
+			let newRes = await csql.insertData(newProd)
+			console.log(newRes)
+			res.render('endTransaction', { dato: `Se ha creado el producto ${newRes[0].title} con id: ${newRes[0].id}` })
 		} else {
 			res.status(422).send({
 				message: "Payload vacio"

@@ -4,6 +4,8 @@ const products = require('./api/products');
 const messages = require('./api/messages');
 const { Server: HttpServer } = require('http')
 const { Server: IOServer } = require('socket.io')
+const bodyParser = require('body-parser');
+
 
 const app = express();
 const httpServer = new HttpServer(app)
@@ -23,6 +25,9 @@ app.use(express.static('public/imgs'));
 app.use(express.static('public/js'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+
+// app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use('/api/products', products);
 app.use('/api/messages', messages);
 
