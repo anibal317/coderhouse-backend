@@ -1,0 +1,8 @@
+Comando para productos:
+Listar productos que tienen menos de 10 productos de stock: db.products.find({stock:{$lt:10}})
+Listar productos que tienen cantidad en su stock igual a 10: db.products.find({stock:{$eq:10}})
+Listar todos los productos: db.products.find()
+Listar por nombre: db.products.find({title:"Mouse"})
+Agregar un producto: db.products.insertOne({title:'Mouse',price: 130,thumbnail: '',stock: 10})
+Borrar un producto: db.products.deleteOne({_id:ObjectId("63867ffb792865f62c79dfa5")})
+Modificar un producto: db.products.updateOne({_id: ObjectId("63891fa5d47bafd1fe6300ab")},{$set:{title:"Ratón ubs 3.0"}})

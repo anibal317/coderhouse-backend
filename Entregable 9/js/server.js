@@ -4,22 +4,32 @@ const products = require('./api/products');
 const messages = require('./api/messages');
 const { Server: HttpServer } = require('http')
 const { Server: IOServer } = require('socket.io')
+const bodyParser = require('body-parser');
+
+const { clienteSQL } = require("./clienteSQLForMessages");
+const csql = new clienteSQL()
 
 const app = express();
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer);
 
+const quip = require('quip'); // the culprit
+
+app.use(quip);
 
 app.engine('handlebars', engine())
 app.set("view engine", "handlebars");
 app.set("views", "./views")
 
 app.use(express.static("public"))
+app.use(express.static("src/"))
 app.use(express.static('public/imgs'));
-app.use(express.static('public/database'));
 app.use(express.static('public/js'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+
+// app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use('/api/products', products);
 app.use('/api/messages', messages);
 
@@ -42,19 +52,23 @@ app.listen(3000, () => {
 });
 
 const connectedServer = httpServer.listen(8080, () => {
-    console.log('Servidor HTTP con WebSocket listo')
+    console.log('Servidor HTTP con WebSocket listo... http://localhost:8080')
 })
 
 let allMessages = []
 
-io.on('connection', socket => {
-    console.log("Nuevo Cliente conectado!");
 
-    socket.emit('newChatMessage', allMessages)
+
+io.on('connection', async socket => {
+    console.log("Nuevo Cliente conectado!");
     
-    socket.on('new-message', (msgContent) => {
-        allMessages.push(msgContent)
-        io.sockets.emit("newChatMessage", allMessages)
+    socket.emit('newChatMessage', await csql.selectData())
+    
+    socket.on('new-message', async (msgContent) => {
+        // allMessages.push(msgContent)
+        // console.log(await csql.selectData())
+        await csql.insertData(msgContent)
+        io.sockets.emit("newChatMessage",await  csql.selectData())
     })
     
     // socket.on('mensajeEnviado', (mensajes)=>{

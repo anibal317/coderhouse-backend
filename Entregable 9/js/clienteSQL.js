@@ -3,8 +3,9 @@ const knexLib = require("knex");
 const options = {
     client: 'sqlite3', // or 'better-sqlite3'
     connection: {
-        filename: "../public/database/ecommerce.sqlite3"
-    }
+        filename: "./ecommerce.sqlite"
+    },
+    useNullAsDefault: true
 }
 //     this.knex = knexLib(options);
 
@@ -15,10 +16,9 @@ const clienteSQL = class ClienteSQL {
         this.knex = knexLib(options);
     }
 
-    createTable(tbl) {
-        console.log(tbl)
-        return this.knex.schema.dropTableIfExists(tbl).finally(() => {
-            return this.knex.schema.createTable(tbl, table => {
+    createTable() {
+        return this.knex.schema.dropTableIfExists("articulos").finally(() => {
+            return this.knex.schema.createTable("articulos", table => {
                 table.increments('id');
                 table.string('title', 15).notNullable();
                 table.string('thumbnail', 255).notNullable();
@@ -29,7 +29,9 @@ const clienteSQL = class ClienteSQL {
     }
 
     insertData(data) {
-        return this.knex(tbl).insert(data)
+        return this.knex('articulos')
+            .returning(['id', 'title'])
+            .insert(data)
     }
 
     selectData() {
@@ -37,17 +39,19 @@ const clienteSQL = class ClienteSQL {
     }
 
     selectDataById(id) {
-        return this.knex('articulos').select('*').from('articulos').where('id', id).then(rows => {
-            console.log(rows)
-        })
+        return this.knex('articulos').select('*').from('articulos').where('id', id).then(rows => rows)
     }
 
     deleteData(id) {
-        return this.knex('articulos').where(id).del()
+        // console.log("en la api",id)
+        return this.knex('articulos').where({id}).del()
+        //         knex('accounts')
+        //   .where('activated', false)
+        //   .del()
     }
 
     updateData(id, data) {
-        return this.knex('articulos').where(id).update(data)
+        return this.knex('articulos').where({id}).update(data)
     }
 
     close() {
