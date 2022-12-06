@@ -1,124 +1,121 @@
 const app = require("express");
 const router = app.Router();
-const { promises: fs } = require('fs');
-const { timeStamp: timeStamp,
-	generateRandomCode: generateRandomCode,
-	generateBigCodeNumber: generateBigCodeNumber } = require('../../../public/js/util.js');
+const multer = require('multer')
 
-const {
-	isNumber,
-	isEmpty,
-	isBodyOk,
-	isPriceNumber,
-	verifyProperties
-} = require("../../middlewares");
+const { clienteSQL } = require("../../sqlCliente/sqlCliente");
+const { productsOptions } = require("../../options/index.js");
+
+const csql = new clienteSQL(productsOptions)
+
+let imgFileName = ""
+let storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, 'public/imgs')
+	},
+	filename: function (req, file, cb) {
+		imgFileName = Date.now() + '-' + file.originalname.replace(" ", "-")
+		cb(null, imgFileName.replace(" ", "-"))
+	}
+})
+let upload = multer({ storage: storage })
 
 
 router.get("/", async (req, res) => {
-	console.log("Listando todos los productos")
 	try {
-		const allProducts = await fs.readFile("./files/productos.txt", 'utf-8')
-		console.log("Listando los productos, usar psotman para ver los resultados")
-		// res.render('productList', { suggestedChamps: JSON.parse(allProducts), listExists: true })
-		res.status(200).send(JSON.parse(allProducts))
-
+		console.log("Consultando datos")
+		// res.send(await csql.selectData())
+		res.render('productList', { suggestedChamps: await csql.selectData(), listExists: true })
 	} catch (error) {
-		// res.render('productList', { listExists: false })
-		res.status(400).send(`Error al recuperar los datos ${error}`)
-
-		return []
+		res.status(400).send(`Error en consultar los datos ${error}`)
 	}
 });
 
-router.get("/:id", [isNumber], async (req, res) => {
+router.get("/:id", async (req, res) => {
 	let productId = parseInt(req.params.id)
-	console.log(`Listando el producto  => id:${productId}`)
+	let resData = await csql.selectDataById(productId)
+	console.table(resData.length)
 	try {
-		const objetos = await fs.readFile("./files/productos.txt", 'utf-8')
-		let allProducts = await JSON.parse(objetos)
-		let oneProduct = await allProducts.find(element => element.id === productId)
-		if (oneProduct) {
-			res.status(200).send(oneProduct)
+		if (resData.length) {
+			res.status(200).send(resData)
 		} else {
-			res.status(400).send("Producto no encontrado")
+			res.status(204).send()
 		}
 	} catch (error) {
 		res.status(400).send(`Error en consultar los datos ${error}`)
 	}
 });
 
-router.post("/", [], async (req, res) => {
+router.post("/", upload.single('thumbnail'), async (req, res) => {
 	console.log("Agregando un producto")
-	let product = req.body
-	delete product.submit;
+	let reqData = req.body
+	const file = req.file
 
-	let code = generateBigCodeNumber()
-
-	let newProd = {
-		...product,
-		timestamp: timeStamp(),
-		code,
-		stock: parseInt(product.stock),
-		price: parseInt(product.price)
+	if (!file) {
+		const error = new Error('Please upload a file')
+		error.httpStatusCode = 400
+		return next(error)
 	}
-
-
-	const productos = await fs.readFile("./files/productos.txt", 'utf-8')
-
-	let newId
-	if (JSON.parse(productos.length) == 0) {
-		newId = 1
-	} else {
-		const lastId = JSON.parse(productos)[JSON.parse(productos).length - 1].id
-		newId = lastId + 1
-	}
-	let arr = JSON.parse(productos)
-	console.log(arr)
-	arr.push({ ...newProd, id: newId })
-
+	delete reqData.submit;
+	let newProd = { ...reqData, thumbnail: imgFileName.replace(" ", "-") }
+	console.log(newProd)
 	try {
-		await fs.writeFile("./files/productos.txt", JSON.stringify(arr, null, 2))
-		res.status(200).send({ dato: `Se ha creado el producto con id:${newId}` })
+		if (Object.keys(reqData).length !== 0) {
+			let newRes = await csql.insertData(newProd)
+			console.log(newRes)
+			res.render('endTransaction', { dato: `Se ha creado el producto ${newRes[0].title} con id: ${newRes[0].id}` })
+		} else {
+			res.status(422).send({
+				message: "Payload vacio"
+			})
+		}
 	} catch (error) {
 		res.status(400).send(`Error al procesar: ${error}`)
 	}
 });
 
-router.put("/:id", [], async (req, res) => {
-	let productId = parseInt(req.params.id)
-	let newData = req.body
-	console.log(`Editando el producto  => id:${productId}`)
+router.put("/:id", async (req, res) => {
+	let productId = req.params.id
+	let productData = req.body
 	try {
-		const objetos = await fs.readFile("./files/cartProducts.txt", 'utf-8')
-		let allProducts = await JSON.parse(objetos)
-		let oneProduct = await allProducts.find(element => element.id === productId)
-
-		Object.keys(newData).forEach((key) => {
-			oneProduct[key] === undefined ? null : oneProduct[key] = newData[key]
-		})
-		await fs.writeFile("./files/cartProducts.txt", JSON.stringify(allProducts, null, 2))
-
-		res.status(200).send("Producto actualizado")
+		if (await csql.updateData(productId, productData) > 0) {
+			res.status(200).send({
+				message: "Se han actualiado los datos"
+			})
+		} else {
+			res.status(204).send({
+				message: "No se han encontrado datos"
+			})
+		}
 
 	} catch (error) {
 		res.status(400).send(`Error en consultar los datos ${error}`)
 	}
 });
 
-router.delete("/:id", [isNumber], async (req, res) => {
-	let productId = req.params.id
+router.delete("/:id", async (req, res) => {
+	let productId = parseInt(req.params.id)
 	console.log(`Borrando el producto => id: ${productId}`)
-
 	try {
-		const objetos = await fs.readFile("./files/productos.txt", "utf-8")
-		let allProducts = await JSON.parse(objetos)
-		let index = await allProducts.findIndex(element => element.id === productId)
-		allProducts.splice(index, 1)
-		await fs.writeFile("./files/productos.txt", JSON.stringify(allProducts, null, 2))
-		res.status(400).send(`Elemento eliminado`)
+		if (await csql.deleteData(productId) > 0) {
+			res.status(200).send({ message: `El item ${productId} fue eliminado` })
+		} else {
+			res.status(204).send({ message: `No hay registros bajo el id ${productId} ` })
+
+		}
 	} catch (error) {
-		res.status(400).send(`Error al eliminar el producto ${error}`)
+		res.status(400).send(`Error al procesar: ${error}`)
+
 	}
+
+	let a =
+		console.log(a)
+	res.send("Salio")
+	// try {
+	// 	res.status(400).send(csql.deleteData(13))
+	// } catch (error) {
+	// 	res.status(400).send(`Error al eliminar el producto ${error}`)
+	// }
 });
+
 
 module.exports = router;

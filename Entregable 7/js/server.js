@@ -55,7 +55,6 @@ const connectedServer = httpServer.listen(8080, () => {
     console.log('Servidor HTTP con WebSocket listo... http://localhost:8080')
 })
 
-let allMessages = []
 
 
 
