@@ -35,18 +35,25 @@ router.get("/", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     console.log("login")
-    console.log(req.body.user)
+    resUser = req.body.user
+    resPwd = req.body.pwd
     try {
         const allusers = await fs.readFile("./files/userList.txt", 'utf-8')
         const allUserList = JSON.parse(allusers)
-        console.log(allUserList)
-        const user = allUserList.find(el => { el.userName === "admin" && el.pwd === "admin" })
-        res.status(200).send(user)
 
+        const user = allUserList.find(el => (el.userName === resUser && el.pwd === resPwd))
+
+        if (user) {
+            delete user.userName
+            delete user.pwd
+            res.status(200).send({status:200,user})
+        } else {
+            res.status(200).send({status:204,mesage:`Resputa sin resultados`})
+
+        }
     } catch (error) {
-        // res.render('productList', { listExists: false })
-        res.status(400).send(`Error al recuperar los datos ${error}`)
-
+        res.render('productList', { listExists: false })
+        // res.status(400).send(`Error al recuperar los datos ${error}`)
         return []
     }
 });

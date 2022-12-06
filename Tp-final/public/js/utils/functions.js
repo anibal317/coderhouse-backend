@@ -7,7 +7,6 @@ function createRandomPwd() {
     return randomPwd
 }
 
-
 module.exports = {
     createRandomPwd
 }

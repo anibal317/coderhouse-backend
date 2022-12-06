@@ -9,7 +9,7 @@
   },
   {
     "name": "Super Admin",
-    "userName": "admin",
+    "userName": "admin@admin.com",
     "pwd":"admin",
     "isAdmin":true,
     "thumbnail": "https://img.favpng.com/20/19/9/user-system-administrator-computer-icons-scalable-vector-graphics-clip-art-png-favpng-DNh10FWZMki2kCny8cqTugNM2.jpg",
