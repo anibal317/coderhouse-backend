@@ -1,10 +1,9 @@
 const app = require("express");
 const router = app.Router();
 const { clienteSQL } = require("../../sqlCliente/sqlCliente");
-const {  msgOptions  } = require("../../options/index.js");
+const { msgOptions } = require("../../options/index.js");
 
 const csql = new clienteSQL(msgOptions)
-
 
 
 router.get("/", async (req, res) => {
@@ -21,11 +20,11 @@ router.get("/", async (req, res) => {
 	}
 });
 
-router.post("/createTable", async(req, res)=>{
-	console.log("Creando base de datos y tablas")
-
-	csql.createTable("internalMessages",)
-	res.send("Creando base y tablas")
+router.get("/createTable", async (req, res) => {
+	// res.send("Creando base y tablas")
+	console.log("Consultando datos")
+	console.log( await csql.selectData('products'))
+	res.status(200).send("Finalizado")
 })
 
 module.exports = router;

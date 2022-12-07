@@ -16,43 +16,31 @@ const clienteSQL = class ClienteSQL {
         this.knex = knexLib(opt);
     }
 
-    createTable(tblName,tblFormat) {
-        return this.knex.schema.dropTableIfExists(tblName).finally(() => {
-            return this.knex.schema.createTable(tblName, table => {
-                // table.increments('id');
-                // table.string('title', 15).notNullable();
-                // table.string('thumbnail', 255).notNullable();
-                // table.float('price');
-                // table.integer('stock');
-                tblFormat
-            })
-        })
-    }
-
-    insertData(data) {
-        return this.knex('articulos')
+    insertData(tblName, data) {
+        return this.knex(tblName)
             .returning(['id', 'title'])
             .insert(data)
     }
 
-    selectData() {
-        return this.knex('articulos').select('*').from('articulos').then(rows => rows)
+    selectData(tblName) {
+        console.log("Table used: ")
+        return this.knex(tblName).select('*').from(tblName).then(rows => rows)
     }
 
-    selectDataById(id) {
-        return this.knex('articulos').select('*').from('articulos').where('id', id).then(rows => rows)
+    selectDataById(tblName,id) {
+        return this.knex(tblName).select('*').from(tblName).where('id', id).then(rows => rows)
     }
 
-    deleteData(id) {
+    deleteData(tblName,id) {
         // console.log("en la api",id)
-        return this.knex('articulos').where({id}).del()
+        return this.knex(tblName).where({id}).del()
         //         knex('accounts')
         //   .where('activated', false)
         //   .del()
     }
 
-    updateData(id, data) {
-        return this.knex('articulos').where({id}).update(data)
+    updateData(tblName, id, data) {
+        return this.knex(tblName).where({id}).update(data)
     }
 
     close() {

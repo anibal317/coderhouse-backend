@@ -4,14 +4,15 @@
  */
  exports.up = function (knex) {
     return knex.schema
-        .createTable('users', function (table) {
+
+        .createTable('products', function (table) {
             table.increments('id');
-            table.string('name', 250).notNullable();
-            table.string('userName', 250).notNullable();
-            table.string('pwd', 255).notNullable();
-            table.boolean('isAdmin').notNullable();
+            table.string('title', 15).notNullable();
             table.string('thumbnail', 255).notNullable();
-        });
+            table.float('price').notNullable();
+            table.integer('stock').notNullable();
+        })
+
 };
 
 /**
@@ -20,5 +21,5 @@
  */
  exports.down = function (knex) {
     return knex.schema
-        .dropTable("users")
+        .dropTable("products")
 };
