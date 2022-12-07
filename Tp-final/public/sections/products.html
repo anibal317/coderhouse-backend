@@ -39,15 +39,64 @@
     </nav>
 
     <section class="container addProductSection">
-        <div class="my_cart">
-            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> -->
-            <button type="button" class="btn btn-primary addProdcut" data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop">
-                <img class="addProductIcon" src="../imgs/add-icon.png" alt="" srcset="">
-                <!-- Agregar</button> -->
-                <!-- Button trigger modal -->
-                Agregar producto
-            </button>
+        <div class="formProduct container border border-radius border-3 mb-3">
+            <div class="container-fluid accordion mb-3 mt-3" id="accordionExample">
+                <div class="w-50 accordion-item mx-auto">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button bg-secondary text-white" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Agregar un nuevo producto
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <!-- <form action="/api/products" method="POST" enctype="multipart/form-data"
+                                id="addProducts" name="addProducts">  -->
+                            <form action="/api/products" method="POST" enctype="multipart/form-data" id="addProducts"
+                                name="addProducts">
+                                <div class="mb-3">
+                                    <label class="form-label required" for="inputName">
+                                        Title
+                                    </label>
+                                    <input class="form-control" type="text" name="title" id="inputName" placeholder=""
+                                        required />
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label class="form-label required" for="inputPrice">
+                                            Price
+                                        </label>
+                                        <input class="form-control" type="number" name="price" id="inputPrice" min=0
+                                            placeholder="" step="any" required />
+                                    </div>
+                                    <div class="col mb-3">
+                                        <label class="form-label required" for="inputPrice">
+                                            Stock
+                                        </label>
+                                        <input class="form-control" type="number" name="stock" id="inputStock" min=0
+                                            placeholder="" step="any" required />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label required" for="inputThumbnail">
+                                        Thumbnail
+                                    </label>
+                                    <input class="form-control" type="file" name="thumbnail" id="inputThumbnail"
+                                        required />
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <input class="btn btn-primary" type="submit" name="submit" id="submit"
+                                        value="Guardar" />
+                                    <input class="btn btn-danger" type="reset" name="cancel" id="cancel"
+                                        value="Cancelar" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </section>
@@ -190,12 +239,15 @@
     </footer>
 
 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
         crossorigin="anonymous"></script>
+
     <script src="../js/productsDomElements.js" type="module"></script>
     <script src="../js/products.js" type="module"></script>
+
 </body>
 
 </html>

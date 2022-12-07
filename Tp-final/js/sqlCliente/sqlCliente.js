@@ -23,7 +23,6 @@ const clienteSQL = class ClienteSQL {
     }
 
     selectData(tblName) {
-        console.log("Table used: ")
         return this.knex(tblName).select('*').from(tblName).then(rows => rows)
     }
 
@@ -32,7 +31,6 @@ const clienteSQL = class ClienteSQL {
     }
 
     deleteData(tblName,id) {
-        // console.log("en la api",id)
         return this.knex(tblName).where({id}).del()
         //         knex('accounts')
         //   .where('activated', false)

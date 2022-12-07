@@ -6,7 +6,7 @@ fetch(getAllProducts)
     .then(res => res.json())
     .then(data => {
         productContainer.innerHTML = ""
-        data.forEach(product => {
+        data.products.forEach(product => {
             productContainer.innerHTML += renderListProduct(product)
         })
         for (let i = 0; i < btnBuyProduct.length; i++) {
@@ -18,13 +18,13 @@ function renderListProduct(lstProducts) {
     let htmlTemplate = `
                 <div class="card" style="width: 18rem;">
                     <div class="d-flex justify-content-center">
-                    <img src="${lstProducts.thumbnail}"
-                    class="card-img-top lstProducts d-flex justify-content-center" alt="..." id='imgUrl${lstProducts.id}'>
+                        <img src=${lstProducts.thumbnail.includes('https://')?lstProducts.thumbnail:'../imgs/'+lstProducts.thumbnail}
+                    class="card-img-top lstProducts d-flex justify-content-center" alt="..."'>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title" id="name${lstProducts.id}" name="${lstProducts.name}">${lstProducts.name}</h5>
+                        <h5 class="card-title" id="name${lstProducts.id}" name="${lstProducts.title}">${lstProducts.title}</h5>
                         <hr>
-                        <p class="card-text" id="code${lstProducts.id}" code="${lstProducts.code}">${lstProducts.code}</p>Code: ${lstProducts.code}</p>
+                        <!--<p class="card-text" id="code${lstProducts.id}" code="${lstProducts.code}">Code: ${lstProducts.code}</p>-->
                         <p class="card-text">Price: $${lstProducts.price}</p>
                         <p class="card-text" id="stock${lstProducts.id}" stock="${lstProducts.stock}"></Stock: ${lstProducts.stock} unidad/es</p>
                         <hr>

@@ -20,8 +20,8 @@ app.use(express.static("public"))
 app.use(express.static("src/"))
 app.use(express.static("public/sections"))
 app.use(express.static("public/sections/404"))
-app.use(express.static('public/imgs'));
 app.use(express.static('public/js'));
+app.use(express.static('public/imgs/'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
@@ -30,6 +30,11 @@ app.use('/api/messages', messages);
 app.use('/api/cart', cart);
 app.use('/api/user', user);
 
+
+const { clienteSQL } = require("../js/sqlCliente/sqlCliente");
+const { msgOptions } = require("../js/options/index.js");
+
+const csql = new clienteSQL(msgOptions)
 
 app.get('/chat', (req, res) => {
   res.render('chat', {
@@ -55,13 +60,13 @@ const connectedServer = httpServer.listen(process.env.MESSAGE_SERVER_PORT, () =>
 io.on('connection', async socket => {
   console.log("Nuevo Cliente conectado!");
   
-  socket.emit('newChatMessage', await csql.selectData())
+  socket.emit('newChatMessage', await csql.selectData('messages'))
   
   socket.on('new-message', async (msgContent) => {
       // allMessages.push(msgContent)
       // console.log(await csql.selectData())
-      await csql.insertData(msgContent)
-      io.sockets.emit("newChatMessage",await  csql.selectData())
+      await csql.insertData('messages',msgContent)
+      io.sockets.emit("newChatMessage",await  csql.selectData('messages'))
   })
   
   // socket.on('mensajeEnviado', (mensajes)=>{

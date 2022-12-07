@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
 
 router.get("/createTable", async (req, res) => {
 	// res.send("Creando base y tablas")
-	console.log("Consultando datos")
+	console.log("Consultando datos messages")
 	console.log( await csql.selectData('products'))
 	res.status(200).send("Finalizado")
 })

@@ -22,9 +22,9 @@ let upload = multer({ storage: storage })
 
 router.get("/", async (req, res) => {
 	try {
-		console.log("Consultando datos")
-		// res.send(await csql.selectData())
-		res.render('productList', { suggestedChamps: await csql.selectData(), listExists: true })
+		console.log("Consultando porductos")
+		let allProducts = await csql.selectData('products')
+		res.status(200).send({products:allProducts})
 	} catch (error) {
 		res.status(400).send(`Error en consultar los datos ${error}`)
 	}
@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
 	let productId = parseInt(req.params.id)
-	let resData = await csql.selectDataById(productId)
+	let resData = await csql.selectDataById('products',productId)
 	console.table(resData.length)
 	try {
 		if (resData.length) {
@@ -60,9 +60,10 @@ router.post("/", upload.single('thumbnail'), async (req, res) => {
 	console.log(newProd)
 	try {
 		if (Object.keys(reqData).length !== 0) {
-			let newRes = await csql.insertData(newProd)
+			let newRes = await csql.insertData('products',newProd)
 			console.log(newRes)
-			res.render('endTransaction', { dato: `Se ha creado el producto ${newRes[0].title} con id: ${newRes[0].id}` })
+			//TODO crear pagina para confimar la creación del producto
+			res.sendFile("404productlist.html",{ root: "public/sections/404"})
 		} else {
 			res.status(422).send({
 				message: "Payload vacio"
@@ -77,7 +78,7 @@ router.put("/:id", async (req, res) => {
 	let productId = req.params.id
 	let productData = req.body
 	try {
-		if (await csql.updateData(productId, productData) > 0) {
+		if (await csql.updateData('products',productId, productData) > 0) {
 			res.status(200).send({
 				message: "Se han actualiado los datos"
 			})
@@ -96,7 +97,7 @@ router.delete("/:id", async (req, res) => {
 	let productId = parseInt(req.params.id)
 	console.log(`Borrando el producto => id: ${productId}`)
 	try {
-		if (await csql.deleteData(productId) > 0) {
+		if (await csql.deleteData('products',productId) > 0) {
 			res.status(200).send({ message: `El item ${productId} fue eliminado` })
 		} else {
 			res.status(204).send({ message: `No hay registros bajo el id ${productId} ` })
