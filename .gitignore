@@ -1,8 +1,8 @@
 **/node_modules
 
 **/package-lock.json
-**/Ejercicio_SQL
-**/EjerciciosClase
+**/Ejercicio_SQL/
+**/Ejercicios_Clase/
 **/Entregable_2/
 **/Entregable_3/
 **/Entregable_4/
@@ -12,5 +12,5 @@
 **/Entregable_8-Mongo/
 **/Entregable_9/
 **/JWT/
-**/Nueva carpeta/
-**/Tp-final/
+**/Nueva-carpeta/
+**/Tp_final/
