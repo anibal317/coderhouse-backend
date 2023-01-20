@@ -1,51 +1,69 @@
-class Client{
-    constructor(nombre,apellido,libros,mascotas){
+class ProductManager {
+    constructor(nombre, apellido) {
         this.name = nombre,
-        this.surname = apellido,
-        this.books=libros,
-        this.pets = mascotas
+            this.surname = apellido,
+            this.products = []
     }
 
-    getFullName(){
-        return `Su nombre compelto es ${this.surname}, ${this.name}`
+    /**
+     *
+     *@description Returns all the products
+     * @return {*} 
+     * @memberof ProductManager
+     */
+    getAllProducts() {
+        return this.products
     }
 
-    addMascotas(pet){
-        this.pets.push(pet)
-    }
-    
-    countMascotas(){
-        return `Tiene ${this.pets.length} mascota/s`
+    /**
+     * @param {*} product
+     * @memberof ProductManager
+     * @description Add a product to the manager
+     */
+    addProduct(product) {
+        if (this.products.find(element => element.code === product.code)) {
+            return console.log("Producto ya en la lista")
+        } else {
+            this.products.push(product);
+            return console.log("Producto agregado")
+        }
     }
 
-    
-    addLibros(libro){
-        this.books.push(libro)
-    }
-    
-    getBookNames(){
-        return this.books.map((book)=>{
-           return book.title
-        })
-    }
-    getBooks(){
-        return this.books
+    /**
+     *
+     * @description Show a product wich matches with the id provided
+     * @param {*} id
+     * @return {*} 
+     * @memberof ProductManager
+     */
+    getProductById(id) {
+        return this.products.find(element => element.code === id) || "No hay productos"
     }
 }
 
-let client1 = new Client("Jorge","Sardón",[{isbn:943344,title:"Libro 1"}],["Loro","Conejo"]);
+class Products {
+    constructor(title, description, price, thumbnail, stock) {
+        this.title = title,
+            this.description = description,
+            this.price = price,
+            this.thumbnail = thumbnail,
+            this.code = "abc"+(Math.floor( Math.random()*999 ) + 100),
+            this.stock = stock
+    }
+}
 
-client1.addMascotas("Gato")
-client1.addLibros({
-    isbn:11111,
-    title:"Libro 2"
+let client1 = new ProductManager("Jorge", "Sardón");
+let product1 = new Products("Product #1","Producto #1",120.5,"Sin imagen",10)
+
+client1.getAllProducts()
+
+client1.addProduct({
+    title: "producto prueba",
+    description: "Este es un producto prueba",
+    price: 200,
+    thumbnail: "Sin imagen",
+    code: "abc123",
+    stock: 25
 })
-
-
-console.log(client1.getFullName())
-console.log(client1.getBookNames())
-console.log(client1.countMascotas())
-
-function operacion(num1,num2,func){
-
-}
+console.log(product1)
+console.log(client1.getAllProducts())
