@@ -42,28 +42,26 @@ class ProductManager {
 }
 
 class Products {
-    constructor(title, description, price, thumbnail, stock) {
+    static id = 0;
+
+    constructor(title, description, price, thumbnail, code, stock) {
+        this.id = ++Products.id
         this.title = title,
             this.description = description,
             this.price = price,
             this.thumbnail = thumbnail,
-            this.code = "abc"+(Math.floor( Math.random()*999 ) + 100),
+            this.code = code,
             this.stock = stock
     }
 }
 
 let client1 = new ProductManager("Jorge", "Sardón");
-let product1 = new Products("Product #1","Producto #1",120.5,"Sin imagen",10)
+let product1 = new Products("Product #1", "Producto #1", 120.5, "Sin imagen", "abc123", 10)
+let product2 = new Products("Product #2", "Producto #2", 120.5, "Sin imagen", "abc123", 10)
+let product3 = new Products("Product #3", "Producto #3", 120.5, "Sin imagen", "abc125", 10)
 
 client1.getAllProducts()
 
-client1.addProduct({
-    title: "producto prueba",
-    description: "Este es un producto prueba",
-    price: 200,
-    thumbnail: "Sin imagen",
-    code: "abc123",
-    stock: 25
-})
-console.log(product1)
+client1.addProduct([product1,product2,product3])
+// console.log(product1,product2)
 console.log(client1.getAllProducts())
