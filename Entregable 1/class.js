@@ -21,7 +21,7 @@ class ProductManager {
      * @description Add a product to the manager
      */
     addProduct(product) {
-        if (this.products.find(element => element.code === product.code)) {
+        if (this.products.find(element => element.id === product.id)) {
             return console.log("Producto ya en la lista")
         } else {
             this.products.push(product);
@@ -37,7 +37,7 @@ class ProductManager {
      * @memberof ProductManager
      */
     getProductById(id) {
-        return this.products.find(element => element.code === id) || "No hay productos"
+        return this.products.find(element => element.id === id) || "No hay productos"
     }
 }
 
@@ -45,8 +45,8 @@ class Products {
     static id = 0;
 
     constructor(title, description, price, thumbnail, code, stock) {
-        this.id = ++Products.id
-        this.title = title,
+        this.id = ++Products.id,
+            this.title = title,
             this.description = description,
             this.price = price,
             this.thumbnail = thumbnail,
@@ -62,6 +62,6 @@ let product3 = new Products("Product #3", "Producto #3", 120.5, "Sin imagen", "a
 
 client1.getAllProducts()
 
-client1.addProduct([product1,product2,product3])
+client1.addProduct([product1, product2, product3])
 // console.log(product1,product2)
 console.log(client1.getAllProducts())
