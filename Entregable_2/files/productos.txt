@@ -1,0 +1,25 @@
+[
+  {
+    "title": "Calculadora",
+    "price": 234.56,
+    "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png",
+    "id": 2
+  },
+  {
+    "title": "Escuadra",
+    "price": 120.5,
+    "thumbnail": "Sin imagen",
+    "id": 3,
+    "description": "Description",
+    "stock": 10
+  },
+  {
+    "title": "Product #1",
+    "description": "Producto #1",
+    "price": 120.5,
+    "thumbnail": "Sin imagen",
+    "code": "abc123",
+    "stock": 10,
+    "id": 4
+  }
+]
