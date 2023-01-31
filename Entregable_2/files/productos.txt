@@ -3,6 +3,7 @@
     "title": "Calculadora",
     "price": 234.56,
     "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png",
+    "code": "abc124",
     "id": 2
   },
   {
@@ -11,6 +12,7 @@
     "thumbnail": "Sin imagen",
     "id": 3,
     "description": "Description",
+    "code": "abc124",
     "stock": 10
   },
   {

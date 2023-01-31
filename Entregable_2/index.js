@@ -9,7 +9,6 @@ class ProductManager {
         this.fileName = fileName
     }
 
-
     addProduct(obj) {
         if (obj) {
             const productos = this.getAllProducts()
@@ -22,14 +21,18 @@ class ProductManager {
                 newId = lastId + 1
             }
 
-            productos.push({ ...obj, id: newId })
+            if (this.codeExist(obj.code)) {
+                return "No se puede dar de alta un producto con un código repetido"
+            } else {
+                productos.push({ ...obj, id: newId })
 
 
-            try {
-                fs.writeFileSync(directory + "/productos.txt", JSON.stringify(productos), fileDataFormatDefault)
-                return console.log(`Se ha agregado el producto: ${obj.title} registrado con el ID:${newId}`)
-            } catch (error) {
-                throw new Error(`Error al guardar: ${error}`)
+                try {
+                    fs.writeFileSync(directory + "/productos.txt", JSON.stringify(productos), fileDataFormatDefault)
+                    return console.log(`Se ha agregado el producto: ${obj.title} registrado con el ID:${newId}`)
+                } catch (error) {
+                    throw new Error(`Error al guardar: ${error}`)
+                }
             }
         } else {
             console.log("Sin datos")
@@ -37,12 +40,21 @@ class ProductManager {
     }
 
     getProductById(id) {
-        try {
-            const objetos = this.getAllProducts()
-            let oneProduct = objetos.find(element => element.id === id)
-            return console.log(oneProduct)
-        } catch (error) {
-            throw new Error(`Error al leer: ${error}`)
+        if (id > 0) {
+            try {
+                const objetos = this.getAllProducts()
+                let oneProduct = objetos.find(element => element.id === id)
+                if (oneProduct) {
+                    return oneProduct
+                } else {
+                    return "Producto no encontrado"
+                }
+            } catch (error) {
+                throw new Error(`Error al leer: ${error}`)
+            }
+        } else {
+            return "El valor ingresado es inválido"
+
         }
     }
 
@@ -51,23 +63,29 @@ class ProductManager {
         return JSON.parse(products)
     }
 
-    getProductUbication(arr, idx) {
-        let index = arr.findIndex(element => element.id === idx)
-        return index
-    }
-
     deleteProductById(id) {
-        try {
-            const objetos = this.getAllProducts()
-            // let index = objetos.findIndex(element => element.id === id)
+        if (id > 0) {
+            try {
+                let prod = this.getProductById(id)
+                let objetos = this.getAllProducts()
+                if (objetos.length > 0) {
+                    if (prod.id) {
+                        objetos.splice(this.getProductUbication(objetos, id), 1)
+                        fs.writeFileSync(directory + "/productos.txt", JSON.stringify(objetos))
+                        return `Elemento eliminado`
+                    } else {
+                        return "Item Inexistente"
+                    }
+                } else {
+                    return "Lista Vacia"
 
-            objetos.splice(this.getProductUbication(objetos, id), 1)
-            console.log(objetos)
-            fs.writeFileSync(directory + "/productos.txt", JSON.stringify(objetos))
-            return `Elemento eliminado`
-        } catch (error) {
-            console.log("Error al eliminar el producto", error)
-            // return []
+                }
+            } catch (error) {
+                console.log("Error al eliminar el producto", error)
+                // return []
+            }
+        } else {
+            return "El valor ingresado es inválido"
         }
     }
 
@@ -98,6 +116,24 @@ class ProductManager {
             console.log(`Producto: ${idx} no encontrado`)
         }
     }
+
+    getProductUbication(arr, idx) {
+        let index = arr.findIndex(element => element.id === idx)
+        return index
+    }
+
+    codeExist(code) {
+        let allProducts = this.getAllProducts()
+        let res = allProducts.find(product => product.code === code)
+        if (res) {
+            return true
+        } else {
+            return false
+        }
+        // return res
+    }
+
+
 }
 
 class Product {
@@ -113,14 +149,16 @@ class Product {
     }
 }
 
-let product1 = new Product("Producto Prueba", "Este es un producto de prueba",200,"Sin Imagen","abc123",25)
+let product1 = new Product("Producto Prueba", "Este es un producto de prueba", 200, "Sin Imagen", "abc123", 25)
 let productMng = new ProductManager("productos.txt")
 
 
-productMng.addProduct(product1)
-productMng.getAllProducts()
-productMng.getProductById(3)
-productMng.updateProduct({title:"New title",description:"Description using update function"},3)
-// productMng.deleteProductById(3)
-productMng.getAllProducts()
+// console.log(productMng.addProduct(product1))
+// productMng.getAllProducts()
+// console.log(productMng.getProductById(5))
+// productMng.updateProduct({title:"New title",description:"Description using update function"},3)
+console.log(productMng.deleteProductById(3))
+// productMng.getAllProducts()
 // productMng.deleteAllProducts()
+// console.log(productMng.codeExist("abc125"))
+// productMng.codeExist("abc124")
