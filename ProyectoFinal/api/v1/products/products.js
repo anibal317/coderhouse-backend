@@ -1,10 +1,10 @@
 const { Router } = require('express');
 const router = Router();
-require('dotenv').config()
-const { itemsInArray } = require('../../../utils/util')
 const { ProductManager } = require('../../../models/productManager.js')
 const product = new ProductManager()
 
+const { itemsInArray } = require('../../../utils/util')
+require('dotenv').config()
 
 
 router.get('/', async (req, res, next) => {
@@ -12,8 +12,10 @@ router.get('/', async (req, res, next) => {
     let limit = req.query.limit
 
     if (Object.entries(req.query).length === 0) {
+        let prods = await product.getAllProducts()
+        prods.forEach(product => { product.categoryName = JSON.parse(process.env.ALLOWED_CATEGORIES)[product.category] })
         res.status(200).send({
-            data: { products: await product.getAllProducts(), totalItems: await product.getAllProducts().length },
+            data: { products: prods, totalItems: await product.getAllProducts().length },
             message: "Datos recuperados"
         })
     }
@@ -36,6 +38,7 @@ router.get('/:pid', async (req, res, next) => {
     console.log("Productos by ID")
     if (Number(pid)) {
         let prod = await product.getProductById(Number(pid))
+        prod.categoryName = JSON.parse(process.env.ALLOWED_CATEGORIES)[prod.category]
         if (prod.id) {
             res.status(200).send({
                 data: { products: prod, totalItems: prod.length },
@@ -56,7 +59,9 @@ router.get('/:pid', async (req, res, next) => {
 router.post('/', (req, res) => {
     console.log("Creando un producto")
     if (itemsInArray(JSON.parse(process.env.REQUIRED_FIELDS), Object.keys(req.body))) {
-        let result = product.addProduct(req.body)
+        let newProd = req.body;
+        newProd.status = true
+        let result = product.addProduct(newProd)
         if (result.status === "Error") {
             res.status(200).send({
                 message: result.message

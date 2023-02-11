@@ -3,7 +3,6 @@ const directory = './files/';
 const fileDataFormatDefault = 'utf-8'
 const fileName = 'productos.txt'
 
-
 class ProductManager {
     constructor() { }
     addProduct(obj) {
@@ -30,7 +29,7 @@ class ProductManager {
                 }
             }
         } else {
-            console.log("Sin datos")
+            return ("Sin datos")
         }
     }
 

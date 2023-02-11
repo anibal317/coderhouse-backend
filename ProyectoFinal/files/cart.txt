@@ -1,0 +1,86 @@
+[
+    {
+        "id": 17,
+        "cartInfo": {
+            "creationDate": "8-2-2023",
+            "subPrice": 100,
+            "taxes": 1,
+            "satate": 0,
+            "qtyProducts": 1
+        },
+        "userInfo": {
+            "userID": 0,
+            "products": [
+                {
+                    "price": 234.56,
+                    "qty": 1,
+                    "total": 100,
+                    "id": 2
+                }
+            ]
+        }
+    },
+    {
+        "id": 16,
+        "cartInfo": {
+            "creationDate": "8-2-2023",
+            "subPrice": 100,
+            "taxes": 1,
+            "satate": 0,
+            "qtyProducts": 1
+        },
+        "userInfo": {
+            "userID": 0,
+            "products": [
+                {
+                    "price": 234.56,
+                    "qty": 1,
+                    "total": 100,
+                    "id": 2
+                }
+            ]
+        }
+    },
+    {
+        "id": 20,
+        "cartInfo": {
+            "creationDate": "8-2-2023",
+            "subPrice": 100,
+            "taxes": 1,
+            "satate": 0,
+            "qtyProducts": 1
+        },
+        "userInfo": {
+            "userID": 0,
+            "products": [
+                {
+                    "price": 234.56,
+                    "qty": 1,
+                    "total": 100,
+                    "id": 2
+                }
+            ]
+        }
+    },
+    {
+        "cartInfo": {
+            "creationDate": "date",
+            "subPrice": "price",
+            "taxes": "taxes",
+            "satate": "satate",
+            "qtyProducts": "qty"
+        },
+        "userInfo": {
+            "userID": "userId",
+            "products": [
+                {
+                    "price": "price",
+                    "qty": "qty",
+                    "total": "total",
+                    "id": "id"
+                }
+            ]
+        },
+        "id": 21
+    }
+]

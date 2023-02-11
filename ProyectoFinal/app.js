@@ -6,6 +6,7 @@ require('dotenv').config()
 const products = require(`./api/${process.env.API_VERSION}/products/products.js`)
 const cart = require(`./api/${process.env.API_VERSION}/cart/cart.js`)
 const home = require(`./api/${process.env.API_VERSION}/home/home.js`)
+const user = require(`./api/${process.env.API_VERSION}/user/user.js`)
 
 
 
@@ -19,6 +20,7 @@ app.use(express.json())
 //Routes
 app.use('/api/products', products);
 app.use('/api/carts', cart);
+app.use('/api/users', user);
 app.use('/', home);
 
 

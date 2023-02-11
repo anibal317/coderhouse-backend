@@ -1,0 +1,11 @@
+[
+    {
+        "userID": 152632,
+        "name": "Jorge Anibal",
+        "lastName": "Sardón",
+        "email": "jorge.sardon@email.com",
+        "password": "password",
+        "user":"jsardon",
+        "profileImg": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKQmFYe2KZvQcnKEfGNICxM4I4udEh_-uG90chKLlXMx2HDGPr_ODubOdkpUFdJVGSKs0&usqp=CAU"
+    }
+]

@@ -7,43 +7,43 @@ const product = new ProductManager()
 const app = express();
 
 
-app.get('/', (req, res, next) => {
+app.get('/', (req, res) => {
     console.log("Entrando en la home")
     res.send(`<h1 style="color:red;">Bienvenido</h1>`)
 })
 
-app.get('/productos', async (req, res, next) => {
+app.get('/products', async (req, res) => {
     console.log("entrando en productos")
     let limit = req.query.limit
-
-    if (Object.entries(req.query).length === 0) {
-        res.status(200).send({
-            data: { products: await product.getAllProducts(), totalItems: await product.getAllProducts().length },
-            message: "Datos recuperados"
-        })
-    }
-
-    if (Number(limit)) {
-        res.status(200).send({
-            data: { products: await product.getAllProducts().slice(0, limit), totalItems: await product.getAllProducts().slice(0, limit).length },
-            message: "Datos recuperados"
-        })
+    if (!limit) {
+        // console.log(req.query)
+        if (Object.entries(req.query).length === 0) {
+            res.status(200).json({
+                data: { products: await product.getAllProducts(), totalItems: await product.getAllProducts().length },
+                message: "Datos recuperados"
+            })
+        }
     } else {
-        res.status(400).send({
-            message: "Valor no valido"
-        })
+        if (Number(limit)) {
+            res.status(200).json({
+                data: { products: await product.getAllProducts().slice(0, Number(limit)), totalItems: await product.getAllProducts().slice(0, Number(limit)).length },
+                message: "Datos recuperados"
+            })
+        } else {
+            res.status(400).json({
+                message: "Valor no valido"
+            })
+        }
     }
 
 })
 
-app.get('/productos/:pid', async (req, res, next) => {
+app.get('/productos/:pid', async (req, res) => {
     let pid = req.params.pid
-    console.log(pid)
     if (Number(pid)) {
         let prod = await product.getProductById(Number(pid))
-        console.log(prod.id)
         if (prod.id) {
-            res.status(200).send({
+            res.status(200).json({
                 data: { products: prod, totalItems: prod.length },
                 message: "Datos recuperados"
             })
@@ -54,7 +54,7 @@ app.get('/productos/:pid', async (req, res, next) => {
         }
     } else {
         pid = 0
-        res.status(400).send({
+        res.status(400).json({
             message: "Valor no valido"
         })
     }
