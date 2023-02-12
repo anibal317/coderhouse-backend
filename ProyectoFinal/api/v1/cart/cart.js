@@ -86,6 +86,8 @@ router.post('/:cid/product/:pid', async (req, res) => {
             allCarts[cartLocation]=cart.data
             fs.writeFileSync(directory + "cart.txt", JSON.stringify(allCarts), fileDataFormatDefault)
             res.status(200).json({ message: "Carrito actualizado" })
+        }else{
+            res.status(404).json({ message: "Prodcuto no encontrado" })
         }
     } else {
         res.status(404).json({ message: "Carrito no encontrado" })
