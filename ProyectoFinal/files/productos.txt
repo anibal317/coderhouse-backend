@@ -18,7 +18,7 @@
     },
     {
         "title": "Escuadra",
-        "price": 120.5,
+        "price": 120,
         "thumbnail": "Sin imagen",
         "id": 3,
         "description": "Description",

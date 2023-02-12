@@ -37,7 +37,6 @@ class CartManager {
         }
     }
 
-
     getAllCarts() {
         let products = fs.readFileSync(directory + fileName, fileDataFormatDefault)
         return JSON.parse(products)
@@ -49,15 +48,15 @@ class CartManager {
                 const objetos = this.getAllCarts()
                 let oneCart = objetos.find(element => element.id === id)
                 if (oneCart) {
-                    return oneCart
+                    return {status:"Success", data:oneCart,message:"Cart encontrado"}
                 } else {
-                    return "Cart no encontrado"
+                    return {status:"Error", message:"Cart no encontrado"}
                 }
             } catch (error) {
                 throw new Error(`Error al leer: ${error}`)
             }
         } else {
-            return "El valor ingresado es inválido"
+            return {status:"Error", message:"Valor ingresado no valido"}
 
         }
     }
@@ -91,6 +90,12 @@ class CartManager {
     getCartUbication(arr, idx) {
         let index = arr.findIndex(element => element.id === idx)
         return index
+    }
+
+    getCartsByUserId(uid){
+        let products = fs.readFileSync(directory + fileName, fileDataFormatDefault)
+        let carByUser = products.find(el =>el.userID == uid)
+        return JSON.parse(carByUser)
     }
 }
 

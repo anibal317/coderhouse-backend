@@ -39,15 +39,15 @@ class ProductManager {
                 const objetos = this.getAllProducts()
                 let oneProduct = objetos.find(element => element.id === id)
                 if (oneProduct) {
-                    return oneProduct
+                    return { status: "Success", data: oneProduct, message: "Producto encontrado" }
                 } else {
-                    return "Producto no encontrado"
+                    return { status: "Error", message: "Producto no encontrado" }
                 }
             } catch (error) {
                 throw new Error(`Error al leer: ${error}`)
             }
         } else {
-            return "El valor ingresado es inválido"
+            return { status: "Error", message: "El valor ingresado es inválido" }
 
         }
     }
