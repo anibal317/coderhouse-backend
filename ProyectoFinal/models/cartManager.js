@@ -42,7 +42,7 @@ class CartManager {
         return JSON.parse(products)
     }
 
-    getCartByID(id) {
+    getCartById(id) {
         if (id > 0) {
             try {
                 const objetos = this.getAllCarts()

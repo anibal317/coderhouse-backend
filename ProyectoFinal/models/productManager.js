@@ -22,7 +22,7 @@ class ProductManager {
             } else {
                 productos.push({ ...obj, id: newId })
                 try {
-                    fs.writeFileSync(directory + "/productos.txt", JSON.stringify(productos), fileDataFormatDefault)
+                    fs.writeFileSync(directory + fileName, JSON.stringify(productos), fileDataFormatDefault)
                     return { status: 'Success', message: `Se ha agregado el producto: ${obj.title} registrado con el ID:${newId}`, id: newId }
                 } catch (error) {
                     throw new Error(`Error al guardar: ${error}`)
@@ -60,19 +60,18 @@ class ProductManager {
     deleteProductById(id) {
         if (id > 0) {
             try {
-                let prod = this.getProductById(id)
                 let objetos = this.getAllProducts()
+                let elementToDelete = this.getProductUbication(objetos, id)
                 if (objetos.length > 0) {
-                    if (prod.id) {
-                        objetos.splice(this.getProductUbication(objetos, id), 1)
-                        fs.writeFileSync(directory + "/productos.txt", JSON.stringify(objetos))
+                    if (elementToDelete > 0) {
+                        objetos.splice(Number(elementToDelete), 1)
+                        fs.writeFileSync(directory + fileName, JSON.stringify(objetos), fileDataFormatDefault)
                         return ({ status: 'Success', message: `Elemento eliminado` })
                     } else {
                         return ({ status: 'Error', message: "Item Inexistente" })
                     }
                 } else {
-                    return ({ status: "error", message: "Lista Vacia" })
-
+                    return ({ status: "error", message: "No hay elementos que eliminar" })
                 }
             } catch (error) {
                 return ({ message: "Error al eliminar el producto", data: error })

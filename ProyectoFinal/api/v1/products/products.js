@@ -8,29 +8,29 @@ require('dotenv').config()
 
 
 router.get('/', async (req, res, next) => {
-    console.log("entrando en productos")
+    console.log("Listando todos los productos")
     let limit = req.query.limit
-
-    if (Object.entries(req.query).length === 0) {
-        let prods = await product.getAllProducts()
-        prods.forEach(product => { product.categoryName = JSON.parse(process.env.ALLOWED_CATEGORIES)[product.category] })
-        res.status(200).send({
-            data: { products: prods, totalItems: await product.getAllProducts().length },
-            message: "Datos recuperados"
-        })
-    }
-
-    if (Number(limit)) {
-        res.status(200).send({
-            data: { products: await product.getAllProducts().slice(0, limit), totalItems: await product.getAllProducts().slice(0, limit).length },
-            message: "Datos recuperados"
-        })
+    if (limit) {
+        if (Number(limit)) {
+            res.status(200).json({
+                data: { products: await product.getAllProducts().slice(0, limit), totalItems: await product.getAllProducts().slice(0, limit).length },
+                message: "Datos recuperados"
+            })
+        } else {
+            res.status(400).json({
+                message: "Valor no valido"
+            })
+        }
     } else {
-        res.status(400).send({
-            message: "Valor no valido"
-        })
+        if (Object.entries(req.query).length === 0) {
+            let prods = await product.getAllProducts()
+            prods.forEach(product => { product.categoryName = JSON.parse(process.env.ALLOWED_CATEGORIES)[product.category] })
+            res.status(200).json({
+                data: { products: prods, totalItems: await product.getAllProducts().length },
+                message: "Datos recuperados"
+            })
+        }
     }
-
 })
 
 router.get('/:pid', async (req, res, next) => {
@@ -84,19 +84,18 @@ router.delete('/:pid', async (req, res) => {
     let pid = req.params.pid
     if (Number(pid)) {
         let result = await product.deleteProductById(Number(pid))
-        console.log(result)
         if (result.status === 'Success') {
-            res.status(200).send({
+            res.status(200).json({
                 data: result,
                 message: res.message
             })
         } else {
-            res.status(200).send({
+            res.status(200).json({
                 date: result, message: result.message
             })
         }
     } else {
-        res.status(400).send({
+        res.status(400).json({
             message: "Valor no valido"
         })
     }
@@ -115,17 +114,32 @@ router.put('/:pid', async (req, res) => {
                 updateError.push(el)
             }
         })
-        let result = product.updateProduct(newProd, Number(pid))
-        if (result.status == "Success") {
-            res.status(200).send({
-                message: Object.keys(updateError).length > 0 ?
-                    { message: "La actualización del producto se concreto con errores", data: { message: "Campos permitidos", dataWithError: updateError, data: JSON.parse(process.env.ALLOWED_FIELDS) } }
-                    :
-                    { message: "Proceso concretado con exito" }
-            })
+        if (Object.keys(newProd).length > 0) {
+            let result = product.updateProduct(newProd, Number(pid))
+            if (result.status == "Success") {
+                res.status(200).json({
+                    message: Object.keys(updateError).length > 0 ? {
+                        message: "La actualización del producto se concreto con errores",
+                        data: {
+                            payloadOK: newProd,
+                            paylodFaild: {
+                                payloadWithError: updateError,
+                                AllowedFileds: JSON.parse(process.env.ALLOWED_FIELDS)
+                            }
+                        }
+                    }
+                        :
+                        { message: "Proceso concretado con exito" }
+                })
+            } else {
+                res.status(404).json({
+                    data: result
+                })
+            }
         }
     } else {
-        res.status(400).send({ message: "Valor no valido" })
+        res.status(400).json({ message: "Valor no valido" })
     }
 })
+
 module.exports = router;
