@@ -105,14 +105,14 @@
         "id": 10
     },
     {
-        "title": "Product #8",
-        "description": "Producto #8",
-        "price": 120.5,
+        "title": "Product #10 - Edited",
+        "description": "Producto #10",
+        "price": 125.2,
         "thumbnail": "Sin imagen",
-        "code": "abc1241",
+        "code": "abc127",
         "stock": 10,
-        "category": 3,
-        "status": true,
+        "category": 5,
+        "status": false,
         "id": 11
     },
     {
@@ -126,13 +126,13 @@
         "id": 12
     },
     {
-        "title": "Product #10",
+        "title": "Product #10 - Edited",
         "description": "Producto #10",
         "code": "abc127",
         "price": 125.2,
         "stock": 10,
         "category": 5,
-        "status": true,
+        "status": false,
         "id": 13
     }
 ]

@@ -1,1 +1,70 @@
-[{"id":17,"userID":0,"products":[{"price":234.56,"qty":2,"total":469.12,"id":2},{"price":120,"qty":2,"total":240,"id":3}],"creationDate":"8-2-2023","state":0,"total":100},{"id":18,"userID":10,"products":[{"price":200,"qty":1,"total":100,"id":1},{"price":100,"qty":4,"total":400,"id":2},{"price":120,"qty":3,"total":360,"id":3},{"price":125.2,"qty":2,"total":250.4,"id":13}],"creationDate":"8-2-2023","state":0,"total":100}]
+[
+    {
+        "id": 17,
+        "userID": 0,
+        "products": [
+            {
+                "price": 234.56,
+                "qty": 2,
+                "total": 469.12,
+                "id": 2
+            },
+            {
+                "price": 120,
+                "qty": 2,
+                "total": 240,
+                "id": 3
+            }
+        ],
+        "creationDate": "8-2-2023",
+        "state": 0,
+        "total": 100
+    },
+    {
+        "id": 18,
+        "userID": 10,
+        "products": [
+            {
+                "price": 200,
+                "qty": 1,
+                "total": 100,
+                "id": 1
+            },
+            {
+                "price": 100,
+                "qty": 4,
+                "total": 400,
+                "id": 2
+            },
+            {
+                "price": 120,
+                "qty": 3,
+                "total": 360,
+                "id": 3
+            },
+            {
+                "price": 125.2,
+                "qty": 2,
+                "total": 250.4,
+                "id": 13
+            },
+            {
+                "price": 120.5,
+                "qty": 1,
+                "total": 120.5,
+                "id": 9
+            }
+        ],
+        "creationDate": "8-2-2023",
+        "state": 0,
+        "total": 100
+    },
+    {
+        "userID": 152632,
+        "products": [],
+        "creationDate": "15-2-2023",
+        "state": 0,
+        "total": 0,
+        "id": 19
+    }
+]

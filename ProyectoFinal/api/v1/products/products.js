@@ -38,10 +38,11 @@ router.get('/:pid', async (req, res, next) => {
     console.log("Productos by ID")
     if (Number(pid)) {
         let prod = await product.getProductById(Number(pid))
-        prod.categoryName = JSON.parse(process.env.ALLOWED_CATEGORIES)[prod.category]
-        if (prod.id) {
+        console.log(prod.data)
+        // prod.categoryName = JSON.parse(process.env.ALLOWED_CATEGORIES)[prod.category]
+        if (prod.data.id) {
             res.status(200).send({
-                data: { products: prod, totalItems: prod.length },
+                data: { product: prod.data},
                 message: "Datos recuperados"
             })
         } else {

@@ -64,10 +64,10 @@ class CartManager {
     deleteCartById(id) {
         if (id > 0) {
             try {
-                let cart = this.getCartByID(id)
+                let cart = this.getCartById(id)
                 let objetos = this.getAllCarts()
                 if (objetos.length > 0) {
-                    if (cart.id) {
+                    if (cart.data.id) {
                         objetos.splice(this.getCartUbication(objetos, id), 1)
                         fs.writeFileSync(directory + fileName, JSON.stringify(objetos))
                         return ({ status: 'Success', message: `Elemento eliminado` })

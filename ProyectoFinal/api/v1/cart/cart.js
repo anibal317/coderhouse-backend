@@ -69,6 +69,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
     if (Number(cid)) {
         if (Number(pid)) {
             let cart = await carts.getCartById(Number(cid))
+            console.log(cart)
             if (cart.status === "Success") {
                 let cartLocation = carts.getCartUbication(carts.getAllCarts(), cart.data.id)
                 let productInCart = cart.data.products.find(el => el.id === Number(pid))
@@ -95,6 +96,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
                 res.status(404).json({ message: "Carrito no encontrado" })
             }
         } else {
+            
             res.status(400).json({
                 message: "Id de producto no válido"
             })
@@ -108,4 +110,21 @@ router.post('/:cid/product/:pid', async (req, res) => {
 
 })
 
+router.post('/',async (req,res) => {
+    console.log("Creando carrtito")
+    let newCart = {
+        userID: users.getUserById(152632).userID,
+        products: [],
+        creationDate: getDate("dd-mm-yyyy"),
+        state: 0,
+        total: 0
+    }
+    let addNewCart = await carts.addCart(newCart)
+    
+    if (addNewCart.status === "Success") {
+        res.status(200).json({ message: "carrito creado" })
+    } else {
+        res.status(404).json({ message: addNewCart })
+    }
+})
 module.exports = router;
