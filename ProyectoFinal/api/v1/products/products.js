@@ -38,20 +38,19 @@ router.get('/:pid', async (req, res, next) => {
     console.log("Productos by ID")
     if (Number(pid)) {
         let prod = await product.getProductById(Number(pid))
-        console.log(prod.data)
-        // prod.categoryName = JSON.parse(process.env.ALLOWED_CATEGORIES)[prod.category]
-        if (prod.data.id) {
-            res.status(200).send({
-                data: { product: prod.data},
+        if (prod.status === "Success") {
+            // prod.categoryName = JSON.parse(process.env.ALLOWED_CATEGORIES)[prod.category]
+            res.status(200).json({
+                data: { product: prod.data },
                 message: "Datos recuperados"
             })
         } else {
-            res.status(200).send({
+            res.status(200).json({
                 message: "Producto no encontrado"
             })
         }
     } else {
-        res.status(400).send({
+        res.status(400).json({
             message: "Valor no valido"
         })
     }
@@ -64,19 +63,19 @@ router.post('/', (req, res) => {
         newProd.status = true
         let result = product.addProduct(newProd)
         if (result.status === "Error") {
-            res.status(200).send({
+            res.status(200).json({
                 message: result.message
             })
         }
         if (result.status === "Success") {
-            res.status(200).send({
+            res.status(200).json({
                 message: result.message,
                 data: result
             })
         }
     } else {
         let a = String(JSON.parse(process.env.REQUIRED_FIELDS)).replace(/,/gi, "\n")
-        res.status(200).send(`Estos campos son requeridos:\n${a}`)
+        res.status(200).json(`Estos campos son requeridos:\n${a}`)
     }
 })
 

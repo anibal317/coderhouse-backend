@@ -21,17 +21,16 @@ router.get('/', function (req, res) {
 
 router.get('/:cid', async function (req, res) {
     let cid = req.params.cid
-    console.log("Carr by ID", cid)
     if (Number(cid)) {
         let cart = await carts.getCartById(Number(cid))
-        if (cart.data.id) {
+        if (cart.status === "Success") {
             res.status(200).json({
                 data: { cartInformation: cart },
                 message: "Datos recuperados"
             })
         } else {
             res.status(200).json({
-                message: "Producto no encontrado"
+                message: "Cart no encontrado"
             })
         }
     } else {
@@ -69,12 +68,10 @@ router.post('/:cid/product/:pid', async (req, res) => {
     if (Number(cid)) {
         if (Number(pid)) {
             let cart = await carts.getCartById(Number(cid))
-            console.log(cart)
             if (cart.status === "Success") {
                 let cartLocation = carts.getCartUbication(carts.getAllCarts(), cart.data.id)
                 let productInCart = cart.data.products.find(el => el.id === Number(pid))
                 let product = await products.getProductById(Number(pid))
-                console.log(product)
                 if (product.status === "Success") {
                     let productInCartId = cart.data.products.findIndex(element => element.id === Number(pid))
                     if (productInCart) {
@@ -96,7 +93,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
                 res.status(404).json({ message: "Carrito no encontrado" })
             }
         } else {
-            
+
             res.status(400).json({
                 message: "Id de producto no válido"
             })
@@ -110,7 +107,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
 
 })
 
-router.post('/',async (req,res) => {
+router.post('/', async (req, res) => {
     console.log("Creando carrtito")
     let newCart = {
         userID: users.getUserById(152632).userID,
@@ -120,7 +117,7 @@ router.post('/',async (req,res) => {
         total: 0
     }
     let addNewCart = await carts.addCart(newCart)
-    
+
     if (addNewCart.status === "Success") {
         res.status(200).json({ message: "carrito creado" })
     } else {
