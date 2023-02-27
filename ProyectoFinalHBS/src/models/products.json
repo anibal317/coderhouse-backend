@@ -1,0 +1,101 @@
+[
+    {
+        "title": "Abrocahdora",
+        "thumbnail": "https://tiotomar.vtexassets.com/arquivos/ids/205151-800-800?v=638105809579370000&width=800&height=800&aspect=true",
+        "price": 234.56,
+        "code": "abc124",
+        "stock": 10,
+        "id": 1
+    },
+    {
+        "title": "Calculadora",
+        "stock": 10,
+        "price": 234.56,
+        "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png",
+        "code": "abc124",
+        "id": 2
+    },
+    {
+        "title": "Escuadra",
+        "price": 120.5,
+        "thumbnail": "data:image/jpeg;base64,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",
+        "id": 3,
+        "description": "Description",
+        "code": "abc124",
+        "stock": 10
+    },
+    {
+        "title": "Product #1",
+        "description": "Producto #1",
+        "price": 120.5,
+        "thumbnail": "Sin imagen",
+        "code": "abc123",
+        "stock": 10,
+        "id": 4
+    },
+    {
+        "title": "Product #2",
+        "description": "Producto #2",
+        "price": 120.5,
+        "thumbnail": "Sin imagen",
+        "code": "abc123",
+        "stock": 10,
+        "id": 5
+    },
+    {
+        "title": "Product #3",
+        "description": "Producto #3",
+        "price": 120.5,
+        "thumbnail": "Sin imagen",
+        "code": "abc123",
+        "stock": 10,
+        "id": 6
+    },
+    {
+        "title": "Product #4",
+        "description": "Producto #4",
+        "price": 120.5,
+        "thumbnail": "Sin imagen",
+        "code": "abc123",
+        "stock": 10,
+        "id": 7
+    },
+    {
+        "title": "Product #5",
+        "description": "Producto #5",
+        "price": 120.5,
+        "thumbnail": "Sin imagen",
+        "code": "abc123",
+        "stock": 10,
+        "id": 8
+    },
+    {
+        "title": "Product #6",
+        "description": "Producto #6",
+        "price": 120.5,
+        "thumbnail": "Sin imagen",
+        "code": "abc123",
+        "stock": 10,
+        "id": 9
+    },
+    {
+        "title": "Product #7",
+        "description": "Producto #7",
+        "price": 120.5,
+        "thumbnail": "Sin imagen",
+        "code": "abc123",
+        "stock": 10,
+        "id": 10
+    },
+    {
+        "title": "New produc",
+        "description": "nuevo producto",
+        "price": "10",
+        "thumbnail": "",
+        "code": "12ff3",
+        "stock": "12",
+        "category": "as3",
+        "status": true,
+        "id": 11
+    }
+]

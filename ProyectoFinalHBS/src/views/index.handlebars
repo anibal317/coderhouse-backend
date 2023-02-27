@@ -1,0 +1,37 @@
+<div class="container content">
+  {{#each products}}
+    <div class="card" style="width: 18rem;">
+      {{#if this.thumbnail}}
+        <img src={{this.thumbnail}} class="card-img-top cardImg" alt="..." />
+      {{else}}
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
+          class="card-img-top cardImg"
+          alt="..."
+        />
+      {{/if}}
+      <div class="card-body">
+        <h5 class="card-title">
+          {{this.title}}
+        </h5>
+        <p class="card-text">
+          {{this.description}}
+        </p>
+        {{! <a href="#" class="btn btn-primary">
+          Go somewhere
+        </a> }}
+      </div>
+      <div>
+        <p>
+          Precio: ${{this.price}}
+        </p>
+        <p>
+          Stock: {{this.stock}}
+        </p>
+        <p>
+          Code: {{this.code}}
+        </p>
+      </div>
+    </div>
+  {{/each}}
+</div>
