@@ -1,0 +1,45 @@
+body {
+	text-align: center;
+	padding: 40px 0;
+	background: #ebf0f5;
+	font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+
+}
+h1 {
+	color: #88b04b;
+	font-weight: 900;
+	font-size: 40px;
+	margin-bottom: 10px;
+}
+p {
+	color: #404f5e;
+	font-size: 20px;
+	margin: 0;
+}
+i {
+	color: #9abc66;
+	font-size: 100px;
+	line-height: 200px;
+	margin-left: -15px;
+}
+.card {
+	background: white;
+	padding: 60px;
+	border-radius: 4px;
+	box-shadow: 0 2px 3px #c8d0d8;
+	display: inline-block;
+	margin: 0 auto;
+}
+.btn {
+	background-color: rgb(255, 255, 255);
+	position: relative;
+	display: inline-block;
+	width: 358px;
+	padding: 5px;
+	z-index: 5;
+	font-size: 25px;
+	margin: 0 auto;
+	color: #33cc99;
+	text-decoration: none;
+	margin-right: 10px;
+}

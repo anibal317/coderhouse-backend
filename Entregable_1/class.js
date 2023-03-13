@@ -6,19 +6,14 @@ class ProductManager {
     }
 
     /**
-     *
-     *@description Returns all the products
-     * @return {*} 
-     * @memberof ProductManager
+     *Returns all the products
      */
     getAllProducts() {
         return this.products
     }
 
     /**
-     * @param {*} product
-     * @memberof ProductManager
-     * @description Add a product to the manager
+     *  Add a product to the manager
      */
     addProduct(product) {
         if (this.products.find(element => element.id === product.id)) {
