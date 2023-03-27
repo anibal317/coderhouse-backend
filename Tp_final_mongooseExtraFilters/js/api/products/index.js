@@ -33,28 +33,28 @@ router.get("/", async (req, res) => {
 					limit: req.query.limit || process.env.DEFAULT_LIMIT,
 					page: req.query.page || 1
 				})
-				res.status(200).json({
-					status: "Success",
-					products: allProducts
+			res.status(200).json({
+				status: "Success",
+				products: allProducts
+			})
+
+		} else {
+			console.log("Sin sort")
+			const allProducts = await productsModel.paginate(
+				{},
+				{
+					limit: req.query.limit || process.env.DEFAULT_LIMIT,
+					page: req.query.page || 1
 				})
-				
-			} else {
-				console.log("Sin sort")
-				const allProducts = await productsModel.paginate(
-					{},
-					{
-						limit: req.query.limit || process.env.DEFAULT_LIMIT,
-						page: req.query.page || 1
-					})
-					console.log(allProducts)
-					res.status(200).json({
-						status: "Success",
-						products: allProducts
-					})
-				}
-				
-			} catch (error) {
-				res.status(400).send(`Error en consultar los datos ${error}`)
+			console.log(allProducts)
+			res.status(200).json({
+				status: "Success",
+				products: allProducts
+			})
+		}
+
+	} catch (error) {
+		res.status(400).send(`Error en consultar los datos ${error}`)
 	}
 });
 
@@ -78,13 +78,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", upload.single('thumbnail'), async (req, res) => {
 	console.log("Agregando un producto")
 	let reqData = req.body
-	const file = req.file
 
-	// if (!file) {
-	// 	const error = new Error('Please upload a file')
-	// 	error.httpStatusCode = 400
-	// 	return next(error)
-	// }
 	delete reqData.submit;
 	// let newProd = { ...reqData, thumbnail: imgFileName.replace(" ", "-") }
 	try {
@@ -102,43 +96,46 @@ router.post("/", upload.single('thumbnail'), async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-	let productId = req.params.id
-	let productData = req.body
-	try {
-		if (await csql.updateData('products', productId, productData) > 0) {
-			res.status(200).send({
-				message: "Se han actualiado los datos"
-			})
-		} else {
-			res.status(204).send({
-				message: "No se han encontrado datos"
-			})
-		}
+	res.send("Falta desarrollo")
+	// let productId = req.params.id
+	// let productData = req.body
+	// try {
+	// 	if (await csql.updateData('products', productId, productData) > 0) {
+	// 		res.status(200).send({
+	// 			message: "Se han actualiado los datos"
+	// 		})
+	// 	} else {
+	// 		res.status(204).send({
+	// 			message: "No se han encontrado datos"
+	// 		})
+	// 	}
 
-	} catch (error) {
-		res.status(400).send(`Error en consultar los datos ${error}`)
-	}
+	// } catch (error) {
+	// 	res.status(400).send(`Error en consultar los datos ${error}`)
+	// }
 });
 
 router.delete("/:id", async (req, res) => {
-	let productId = req.params.id
-	console.log(`Borrando el producto => id: ${productId}`)
-	try {
-		// if (await csql.deleteData('products', productId) > 0) {
-		let result = await productsModel.deleteOne({ id: productId });
-		res.status(200).json({ message: `El item ${productId} fue eliminado`, info: result })
-		// } else {
-		// res.status(204).send({ message: `No hay registros bajo el id ${productId} ` })
+	res.send("Falta desarrollo")
 
-		// }
-	} catch (error) {
-		res.status(400).send(`Error al procesar: ${error}`)
+	// let productId = req.params.id
+	// console.log(`Borrando el producto => id: ${productId}`)
+	// try {
+	// 	// if (await csql.deleteData('products', productId) > 0) {
+	// 	let result = await productsModel.deleteOne({ id: productId });
+	// 	res.status(200).json({ message: `El item ${productId} fue eliminado`, info: result })
+	// 	// } else {
+	// 	// res.status(204).send({ message: `No hay registros bajo el id ${productId} ` })
 
-	}
+	// 	// }
+	// } catch (error) {
+	// 	res.status(400).send(`Error al procesar: ${error}`)
 
-	let a =
-		console.log(a)
-	res.send("Salio")
+	// }
+
+	// let a =
+	// 	console.log(a)
+	// res.send("Salio")
 	// try {
 	// 	res.status(400).send(csql.deleteData(13))
 	// } catch (error) {

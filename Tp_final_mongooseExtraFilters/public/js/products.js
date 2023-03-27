@@ -46,24 +46,14 @@ function renderListProduct(lstProducts) {
     return htmlTemplate
 }
 
-function wrangQty(e) {
-    const qty = parseInt(document.getElementById(`qty${e.target.dataset.id}`).value)
-    const maxStock = parseInt(document.getElementById(`stock${e.target.dataset.id}`).getAttribute('stock'))
-    if (qty > maxStock) {
-        return true
-    }
-    return false
-}
 
 async function comprar(e) {
     e.preventDefault()
     const qty = parseInt(document.getElementById(`qty${e.target.dataset.id}`).value)
     const maxStock = parseInt(document.getElementById(`stock${e.target.dataset.id}`).getAttribute('stock'))
-    console.log(maxStock, qty)
     if (qty < maxStock || qty === 0) {
         const prodId = e.target.dataset.id
         const price = e.target.dataset.price
-        console.log(qty)
 
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -81,11 +71,24 @@ async function comprar(e) {
             body: raw,
             redirect: 'follow'
         };
+        document.getElementById(`qty${e.target.dataset.id}`).value = 0
 
         fetch(cart, requestOptions)
             .then(response => response.text())
-            .then(result => console.log(result))
+            .then(result => {
+                console.log(result, "Resultd del post")
+                fetch(getAllProducts,
+                    {
+                        method: 'POST',
+                        headers: myHeaders,
+                        body: raw.qtyBought,
+                        redirect: 'follow'
+                    }
+                )
+            })
             .catch(error => console.log('error', error));
+
+
     } else {
         swal({ text: "Error en cantidad", icon: "error" })
     }
