@@ -4,7 +4,7 @@ const { promises: fs } = require('fs');
 
 const {
 	isNumber,
-	
+
 } = require("../../middlewares");
 
 
@@ -43,10 +43,7 @@ router.get("/:id", [isNumber], async (req, res) => {
 router.post("/", [], async (req, res) => {
 	console.log("Agregando elemento al carrito")
 	let product = req.body
-
 	const cartItems = await fs.readFile("./files/cartProducts.txt", 'utf-8')
-
-
 	let newId
 	if (JSON.parse(cartItems).length == 0) {
 		newId = 1
@@ -55,16 +52,38 @@ router.post("/", [], async (req, res) => {
 		newId = lastId + 1
 	}
 
-	let arr = JSON.parse(cartItems)
-
-	arr.push({ ...product, idCart: newId })
-
-	try {
-		await fs.writeFile("./files/cartProducts.txt", JSON.stringify(arr, null, 2))
-		res.status(200).send({ dato: `Se ha creado el producto con id:${newId}` })
-	} catch (error) {
-		res.status(400).send(`Error al procesar: ${error}`)
+	const existElement = JSON.parse(cartItems).findIndex((item, index) => {
+		if (item.prod_id === product.prod_id) {
+			return true
+		}
 	}
+	)
+	if (existElement >= 0) {
+		let arr = JSON.parse(cartItems)
+		console.log(product)
+		arr[existElement].qtyBought += product.qtyBought
+		arr[existElement].subTotal = arr[existElement].subTotal + product.subTotal
+		console.log(arr)
+		try {
+			await fs.writeFile("./files/cartProducts.txt", JSON.stringify(arr, null, 2))
+			res.status(200).send({ dato: `Se ha creado el producto con id:${newId}` })
+		} catch (error) {
+			res.status(400).send(`Error al procesar: ${error}`)
+		}
+	} else {
+
+		let arr = JSON.parse(cartItems)
+
+		arr.push({ ...product, idCart: newId })
+
+		try {
+			await fs.writeFile("./files/cartProducts.txt", JSON.stringify(arr, null, 2))
+			res.status(200).send({ dato: `Se ha creado el producto con id:${newId}` })
+		} catch (error) {
+			res.status(400).send(`Error al procesar: ${error}`)
+		}
+	}
+
 });
 
 router.put("/:id", [], async (req, res) => {

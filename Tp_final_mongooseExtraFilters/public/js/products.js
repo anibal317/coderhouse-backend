@@ -2,11 +2,12 @@ import { getAllProducts, cart } from '../js/utils/urlsApi.js'
 import { productContainer, btnBuyProduct } from '../js/productsDomElements.js'
 
 
+
 fetch(getAllProducts)
     .then(res => res.json())
     .then(data => {
         productContainer.innerHTML = ""
-        data.products.forEach(product => {
+        data.products.docs.forEach(product => {
             productContainer.innerHTML += renderListProduct(product)
         })
         for (let i = 0; i < btnBuyProduct.length; i++) {
@@ -18,20 +19,25 @@ function renderListProduct(lstProducts) {
     let htmlTemplate = `
                 <div class="card" style="width: 18rem;">
                     <div class="d-flex justify-content-center">
-                        <img src=${lstProducts.thumbnail.includes('https://')?lstProducts.thumbnail:'../imgs/'+lstProducts.thumbnail}
+                        <img src=${lstProducts.thumbnail.includes('https://') ? lstProducts.thumbnail : '../imgs/' + lstProducts.thumbnail}
                     class="card-img-top lstProducts d-flex justify-content-center" alt="..."'>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title" id="name${lstProducts._id}" name="${lstProducts.title}">${lstProducts.title}</h5>
+                        <h5 class="card-title" id="${lstProducts._id}" name="${lstProducts.name}">${lstProducts.name}</h5>
                         <hr>
                         <!--<p class="card-text" id="code${lstProducts._id}" code="${lstProducts.code}">Code: ${lstProducts.code}</p>-->
+                        <h6 class="card-text" id="description${lstProducts._id}"> ${lstProducts.description}</h6>
                         <p class="card-text">Price: $${lstProducts.price}</p>
+                        <p class="card-text">Disponibilidad: ${lstProducts.stock} unidad/es</p>
                         <p class="card-text" id="stock${lstProducts._id}" stock="${lstProducts.stock}"></Stock: ${lstProducts.stock} unidad/es</p>
                         <hr>
-                        <div class="text-center">
+                        <div class="text-center btn-container">
                             <label class="" for="quantity">Quantity</label>
-                            <input type="number" class="" name="quantity" id="qty${lstProducts._id}">
-                            <button class="btn btn-primary text-center mt-2 btnBuyProduct" data-description=${lstProducts.description} data-timestamp=${lstProducts.timeStamp} data-id=${lstProducts.id} data-price=${lstProducts.price} id="btnBuyProduct">Comprar</button>
+                            <input type="number" class="" name="quantity" id="qty${lstProducts._id}" min=0 max=${lstProducts.stock}>
+                            <button class="btn btn-primary text-center mt-2 btnBuyProduct" data-description=${lstProducts.name} data-id=${lstProducts._id} data-price=${lstProducts.price} id="btnBuyProduct">
+                                <img src="../imgs/cart.svg" class="svgCart"/>
+                                Agregar al carrito
+                            </button>
                         </div>
                         <hr>
                     </div>
@@ -40,44 +46,47 @@ function renderListProduct(lstProducts) {
     return htmlTemplate
 }
 
-
+function wrangQty(e) {
+    const qty = parseInt(document.getElementById(`qty${e.target.dataset.id}`).value)
+    const maxStock = parseInt(document.getElementById(`stock${e.target.dataset.id}`).getAttribute('stock'))
+    if (qty > maxStock) {
+        return true
+    }
+    return false
+}
 
 async function comprar(e) {
-    const qty = document.getElementById(`qty${e.target.dataset.id}`).value
-    const name = document.getElementById(`name${e.target.dataset.id}`).getAttribute('name')
-    const code = document.getElementById(`code${e.target.dataset.id}`).getAttribute('code')
-    const imgUrl = document.getElementById(`imgUrl${e.target.dataset.id}`)
-    const stock = document.getElementById(`stock${e.target.dataset.id}`).getAttribute('stock')
+    e.preventDefault()
+    const qty = parseInt(document.getElementById(`qty${e.target.dataset.id}`).value)
+    const maxStock = parseInt(document.getElementById(`stock${e.target.dataset.id}`).getAttribute('stock'))
+    console.log(maxStock, qty)
+    if (qty < maxStock || qty === 0) {
+        const prodId = e.target.dataset.id
+        const price = e.target.dataset.price
+        console.log(qty)
 
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
 
-    let raw = JSON.stringify({
-        producto: {
-            id: parseInt(e.target.dataset.id),
-            timeStamp: e.target.dataset.timestamp,
-            description: e.target.dataset.description,
-            price: parseFloat(e.target.dataset.price),
-            code,
-            name,
-            stock,
-            img: imgUrl.src
-        },
-        qtyBought: parseInt(qty),
-        timestamp: Date.now(),
-        subTotal: parseInt(qty) * parseFloat(e.target.dataset.price)
-    })
 
-    let requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-    };
+        let raw = JSON.stringify({
+            price: parseFloat(price),
+            prod_id: prodId,
+            qtyBought: parseInt(qty),
+            subTotal: parseInt(qty) * parseFloat(e.target.dataset.price).toFixed(2)
+        })
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
 
-    fetch(cart, requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
+        fetch(cart, requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+    } else {
+        swal({ text: "Error en cantidad", icon: "error" })
+    }
 }

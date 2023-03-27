@@ -2,8 +2,7 @@ const app = require("express");
 const router = app.Router();
 const multer = require('multer')
 const productsModel = require("../../../models/products")
-
-
+require('dotenv').config()
 
 let imgFileName = ""
 let storage = multer.diskStorage({
@@ -21,13 +20,41 @@ let upload = multer({ storage: storage })
 router.get("/", async (req, res) => {
 	try {
 		console.log("Consultando porductos")
-		const allProducts = await productsModel.find()
-		res.status(200).json({
-			status: "Success",
-			products: allProducts
-		})
-	} catch (error) {
-		res.status(400).send(`Error en consultar los datos ${error}`)
+		if (req.query.sort) {
+			let sort = req.query.sort === 'asc' ? 1 : -1
+			console.log("Con sort", sort)
+			const allProducts = await productsModel.aggregate([
+				{
+					$sort: { price: sort }
+				}
+			]).paginate(
+				{},
+				{
+					limit: req.query.limit || process.env.DEFAULT_LIMIT,
+					page: req.query.page || 1
+				})
+				res.status(200).json({
+					status: "Success",
+					products: allProducts
+				})
+				
+			} else {
+				console.log("Sin sort")
+				const allProducts = await productsModel.paginate(
+					{},
+					{
+						limit: req.query.limit || process.env.DEFAULT_LIMIT,
+						page: req.query.page || 1
+					})
+					console.log(allProducts)
+					res.status(200).json({
+						status: "Success",
+						products: allProducts
+					})
+				}
+				
+			} catch (error) {
+				res.status(400).send(`Error en consultar los datos ${error}`)
 	}
 });
 

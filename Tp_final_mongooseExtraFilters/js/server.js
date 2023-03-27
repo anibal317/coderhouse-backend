@@ -34,7 +34,7 @@ app.use('/api/user', user);
 app.use('/api/messages', messages);
 
 //Mongoose
-mongoose.connect(`mongodb+srv://jsardon:casandra317@cluster0.j5iaeo5.mongodb.net/?retryWrites=true&w=majority`)
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@cluster0.j5iaeo5.mongodb.net/?retryWrites=true&w=majority`)
   .then(() => console.log('DB Conectada'))
   .catch(error => console.log("Error en Conexion MongoDB Attlas: ", error))
 
