@@ -21,21 +21,18 @@ router.get("/", async (req, res) => {
 	try {
 		console.log("Consultando porductos")
 		if (req.query.sort) {
-			let sort = req.query.sort === 'asc' ? 1 : -1
-			console.log("Con sort", sort)
-			const allProducts = await productsModel.aggregate([
-				{
-					$sort: { price: sort }
-				}
-			]).paginate(
+			let sortBy = req.query.sort === 'asc' ? 1 : -1
+
+			let myAggregate = await productsModel.paginate(
 				{},
 				{
 					limit: req.query.limit || process.env.DEFAULT_LIMIT,
-					page: req.query.page || 1
+					page: req.query.page || 1, sort: { price: sortBy },
 				})
+
 			res.status(200).json({
 				status: "Success",
-				products: allProducts
+				products: myAggregate
 			})
 
 		} else {

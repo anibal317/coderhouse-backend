@@ -8,6 +8,8 @@ const userSchema = new Schema({
     email: { type: String, unique: true },
     password: { type: String, required: true },
     date: { type: Date, default: Date.now },
+    confirmed:{type: Boolean,default:false},
+    rol:{type: String, default:"user"},
     carts:[]
 })
 

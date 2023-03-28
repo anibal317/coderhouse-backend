@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        const { nombre, apellido, email, password } = req.body
+        const { name, lastName, email, userName, password } = req.body
         const resultado = await userModel.create({
             nombre, apellido, email, password
         })
