@@ -20,8 +20,24 @@ router.get("/", async (req, res) => {
 	}
 });
 
+router.get("/allCartsId", async (req, res) => {
+	console.log(`Listando todos los id de los carts`)
+	try {
+		const allCarts = await cartModel.find()
+		const onlyKeys = allCarts.map(el => el._id)
+		// if (oneCart) {
+		res.status(200).json({
+			status: "Success",
+			cart: onlyKeys
+		})
+	} catch (error) {
+		res.status(400).send(`Error en consultar los datos ${error}`)
+	}
+})
+
+
 router.get("/:cid", async (req, res) => {
-	let productId = req.params.id
+	let productId = req.params.cid
 	console.log(`Listando el producto  => id:${productId}`)
 	try {
 		const oneCart = await cartModel.findById(productId)
@@ -41,31 +57,42 @@ router.get("/:cid", async (req, res) => {
 router.post("/", async (req, res) => {
 	console.log("Agregando elemento al carrito")
 	let product = req.body
-
+	console.log(product)
+	
 	const cartItems = await cartModel.find()
-
-
 	const existElement = cartItems.find((item, index) => item.prod_id === product.prod_id)
 
-	if (existElement) {
-		const result = await cartModel.findOneAndUpdate(existElement._id, {
-			qtyBought: existElement.qtyBought + product.qtyBought,
-			subTotal: existElement.subTotal + product.subTotal
-		})
-		res.status(200).json({
-			status: "Succes",
-			res: result
-		})
+	// userId: String,
+    // products: Array,
+    // creationDate: {
+    //     type:Date,
+    //     default: Date.now()
+    // },
+    // state:{
+    //     type: Boolean,
+    //     default:0
+    // },
+    // total:Number,
 
-	} else {
+	// if (existElement) {
+	// 	const result = await cartModel.findOneAndUpdate(existElement._id, {
+	// 		qtyBought: existElement.qtyBought + product.qtyBought,
+	// 		subTotal: existElement.subTotal + product.subTotal
+	// 	})
+	// 	res.status(200).json({
+	// 		status: "Succes",
+	// 		res: result
+	// 	})
 
-		try {
-			const prodCreated = await cartModel.create(product)
-			res.status(200).json({ satatus: "Success", result: prodCreated })
-		} catch (error) {
-			res.status(400).json({ message: `Error al procesar: ${error}` })
-		}
-	}
+	// } else {
+
+	// 	try {
+	// 		const prodCreated = await cartModel.create(product)
+	// 		res.status(200).json({ satatus: "Success", result: prodCreated })
+	// 	} catch (error) {
+	// 		res.status(400).json({ message: `Error al procesar: ${error}` })
+	// 	}
+	// }
 
 });
 
@@ -82,7 +109,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
 
 
 
-router.delete("//:cid/product/:pid", async (req, res) => {
+router.delete("/:cid/product/:pid", async (req, res) => {
 	res.send("Falta desarrollo")
 	// let productId = req.params.id
 	// console.log(`Borrando el producto => id: ${productId}`)

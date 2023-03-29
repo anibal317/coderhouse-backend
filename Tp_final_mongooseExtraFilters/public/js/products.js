@@ -54,16 +54,20 @@ async function comprar(e) {
     if (qty < maxStock || qty === 0) {
         const prodId = e.target.dataset.id
         const price = e.target.dataset.price
-
+        const userId = 10
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-
         let raw = JSON.stringify({
-            price: parseFloat(price),
-            prod_id: prodId,
-            qtyBought: parseInt(qty),
-            subTotal: parseInt(qty) * parseFloat(e.target.dataset.price).toFixed(2)
+            userId,
+            products:[
+                {
+                    price: parseFloat(price),
+                    qty: parseInt(qty),
+                    id: prodId,
+                    subTotal: parseInt(qty) * parseFloat(e.target.dataset.price).toFixed(2)
+                }
+            ],
         })
         let requestOptions = {
             method: 'POST',
