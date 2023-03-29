@@ -7,10 +7,10 @@ const userSchema = new Schema({
     lastName: { type: String, required: true, index: true },
     email: { type: String, unique: true },
     password: { type: String, required: true },
-    date: { type: Date, default: Date.now },
-    confirmed:{type: Boolean,default:false},
-    rol:{type: String, default:"user"},
-    carts:[]
+    date: { type: Date, default: Date.now() },
+    confirmed: { type: Boolean, default: false },
+    rol: { type: String, default: "user" },
+    carts: { type: Array, default: [] }
 })
 
 const userModel = model(userCollection, userSchema);

@@ -19,10 +19,11 @@ router.get("/", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
+   console.log(req.body)
     try {
-        const { name, lastName, email, userName, password } = req.body
+        const { name, lastname, email, username, password } = req.body
         const resultado = await userModel.create({
-            nombre, apellido, email, password
+            name, lastName:lastname, email, userName:username, password
         })
         res.status(200).json({
             status: "Success",
