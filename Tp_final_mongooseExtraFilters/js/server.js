@@ -29,7 +29,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/products', products);
-app.use('/api/cart', cart);
+app.use('/api/carts', cart);
 app.use('/api/user', user);
 app.use('/api/messages', messages);
 

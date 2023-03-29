@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 	}
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:cid", async (req, res) => {
 	let productId = req.params.id
 	console.log(`Listando el producto  => id:${productId}`)
 	try {
@@ -69,29 +69,20 @@ router.post("/", async (req, res) => {
 
 });
 
-router.put("/:id", async (req, res) => {
-	res.send("Falta desarrollo")
-	// let productId = parseInt(req.params.id)
-	// let newData = req.body
-	// console.log(`Editando el producto  => id:${productId}`)
-	// try {
-	// 	const objetos = await fs.readFile("./files/cartProducts.txt", 'utf-8')
-	// 	let allProducts = await JSON.parse(objetos)
-	// 	let oneProduct = await allProducts.find(element => element.id === productId)
+router.post("/:cid/product/:pid", async (req, res) => {
+	try {
+		let response = await manager.addProductToCart(parseInt(req.params.cid), parseInt(req.params.pid), 1)
+		res.send(response)
+	} catch {
+		res.send("Error en alguno de los archivos")
+	}
 
-	// 	Object.keys(newData).forEach((key) => {
-	// 		oneProduct[key] === undefined ? null : oneProduct[key] = newData[key]
-	// 	})
-	// 	await fs.writeFile("./files/cartProducts.txt", JSON.stringify(allProducts, null, 2))
-
-	// 	res.status(200).send("Producto actualizado")
-
-	// } catch (error) {
-	// 	res.status(400).send(`Error en consultar los datos ${error}`)
-	// }
 });
 
-router.delete("/:id", async (req, res) => {
+
+
+
+router.delete("//:cid/product/:pid", async (req, res) => {
 	res.send("Falta desarrollo")
 	// let productId = req.params.id
 	// console.log(`Borrando el producto => id: ${productId}`)
@@ -107,5 +98,27 @@ router.delete("/:id", async (req, res) => {
 	// 	res.status(400).send(`Error al eliminar el producto ${error}`)
 	// }
 });
+
+// router.put("/:id", async (req, res) => {
+// 	res.send("Falta desarrollo")
+// 	// let productId = parseInt(req.params.id)
+// 	// let newData = req.body
+// 	// console.log(`Editando el producto  => id:${productId}`)
+// 	// try {
+// 	// 	const objetos = await fs.readFile("./files/cartProducts.txt", 'utf-8')
+// 	// 	let allProducts = await JSON.parse(objetos)
+// 	// 	let oneProduct = await allProducts.find(element => element.id === productId)
+
+// 	// 	Object.keys(newData).forEach((key) => {
+// 	// 		oneProduct[key] === undefined ? null : oneProduct[key] = newData[key]
+// 	// 	})
+// 	// 	await fs.writeFile("./files/cartProducts.txt", JSON.stringify(allProducts, null, 2))
+
+// 	// 	res.status(200).send("Producto actualizado")
+
+// 	// } catch (error) {
+// 	// 	res.status(400).send(`Error en consultar los datos ${error}`)
+// 	// }
+// });
 
 module.exports = router;
