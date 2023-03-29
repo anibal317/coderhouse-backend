@@ -29,6 +29,9 @@ router.get("/", async (req, res) => {
 					limit: req.query.limit || process.env.DEFAULT_LIMIT,
 					page: req.query.page || 1, sort: { price: sortBy },
 				})
+				
+			myAggregate.prevLink = myAggregate.hasPrevPage == false ? null : `http://${req.get('host')}${req.baseUrl}${req.url.replace("/","")}&page=${myAggregate.prevPage}`
+			myAggregate.nextLink = myAggregate.hasNextPage == false ? null : `http://${req.get('host')}${req.baseUrl}${req.url.replace("/","")}&page=${myAggregate.nextPage}`
 
 			res.status(200).json({
 				status: "Success",
@@ -43,7 +46,10 @@ router.get("/", async (req, res) => {
 					limit: req.query.limit || process.env.DEFAULT_LIMIT,
 					page: req.query.page || 1
 				})
-			console.log(allProducts)
+
+				allProducts.prevLink = allProducts.hasPrevPage == false ? null : `http://${req.get('host')}${req.url.replace("/","")}?page=${allProducts.prevPage}`
+				allProducts.nextLink = allProducts.hasNextPage == false ? null : `http://${req.get('host')}${req.url.replace("/","")}?page=${allProducts.nextPage}`
+
 			res.status(200).json({
 				status: "Success",
 				products: allProducts
