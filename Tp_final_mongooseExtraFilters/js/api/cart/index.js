@@ -58,21 +58,21 @@ router.post("/", async (req, res) => {
 	console.log("Agregando elemento al carrito")
 	let product = req.body
 	console.log(product)
-	
+
 	const cartItems = await cartModel.find()
 	const existElement = cartItems.find((item, index) => item.prod_id === product.prod_id)
 
 	// userId: String,
-    // products: Array,
-    // creationDate: {
-    //     type:Date,
-    //     default: Date.now()
-    // },
-    // state:{
-    //     type: Boolean,
-    //     default:0
-    // },
-    // total:Number,
+	// products: Array,
+	// creationDate: {
+	//     type:Date,
+	//     default: Date.now()
+	// },
+	// state:{
+	//     type: Boolean,
+	//     default:0
+	// },
+	// total:Number,
 
 	// if (existElement) {
 	// 	const result = await cartModel.findOneAndUpdate(existElement._id, {
@@ -106,24 +106,42 @@ router.post("/:cid/product/:pid", async (req, res) => {
 
 });
 
+router.delete('/:cid', async function (req, res) {
+	let cartId = req.params.cid
+	console.log(`Borrando el producto => id: ${cartId}`)
+	const result = await cartModel.deleteOne({ _id: cartId }).then(() => {
+		console.log(result, "result")
+		res.status(200).json({
+			message: result,
+			status: "Success"
+		})
+	}).catch(err => {
+		res.status(404).json({
+			message: err
+		})
 
+	})
+
+})
 
 
 router.delete("/:cid/product/:pid", async (req, res) => {
-	res.send("Falta desarrollo")
-	// let productId = req.params.id
-	// console.log(`Borrando el producto => id: ${productId}`)
-
-	// try {
-	// 	const objetos = await fs.readFile("./files/cartProducts.txt", "utf-8")
-	// 	let allProducts = await JSON.parse(objetos)
-	// 	let index = await allProducts.findIndex(element => element.id === productId)
-	// 	allProducts.splice(index, 1)
-	// 	await fs.writeFile("./files/cartProducts.txt", JSON.stringify(allProducts, null, 2))
-	// 	res.status(400).send(`Elemento eliminado`)
-	// } catch (error) {
-	// 	res.status(400).send(`Error al eliminar el producto ${error}`)
-	// }
+	const productId = req.params.pid
+	const cartId = req.params.cid
+	try {
+		const cart = await cartModel.findById(cartId)
+		const productIdx = cart.products.findIndex(el => el.id === productId)
+		cart.products.splice(productIdx, 1)
+		console.log(cart.products)
+		let total = cart.products.reduce((anterior, actual) => anterior + actual.total, 0)
+		console.log(cart.products)
+		console.log(total)
+		let result = await cartModel.findOneAndUpdate({_id:cartId},{products:cart.products,total})
+		res.send("Ok")
+		// res.status(400).send(`Elemento eliminado`)
+	} catch (error) {
+		res.status(400).send(`Error al eliminar el producto ${error}`)
+	}
 });
 
 // router.put("/:id", async (req, res) => {
