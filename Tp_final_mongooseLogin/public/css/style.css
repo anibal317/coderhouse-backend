@@ -80,10 +80,12 @@ a:hover {
 	width: 15%;
 }
 
-.required::after {
-	content: "*";
-	color: white;
-}
+label[for]:after {
+	content: '*';
+	color: red;
+  }
+  
+
 .svgCart {
 	width: 20%;
 }
@@ -98,3 +100,16 @@ a:hover {
     margin-top: 21px;
     justify-content: center;
 }
+
+.btn-home {
+	border: none;
+	background: none;
+	font-size: 1.5rem;
+	color: #000;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+  }
+  
+  .btn-home:hover {
+	transform: scale(1.2);
+  }

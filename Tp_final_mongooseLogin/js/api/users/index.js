@@ -1,5 +1,7 @@
 const { Router } = require("express");
 const userModel = require("../../../models/user")
+const { hashPassword, comparePassword } = require("../../../public/js/utils/encriptation")
+
 const router = Router()
 
 router.get("/", async (req, res) => {
@@ -19,11 +21,11 @@ router.get("/", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
-   console.log(req.body)
     try {
         const { name, lastname, email, username, password } = req.body
+        let pwd = await hashPassword(password)
         const resultado = await userModel.create({
-            name, lastName:lastname, email, userName:username, password
+            name, lastName:lastname, email, userName:username, password:pwd
         })
         res.status(200).json({
             status: "Success",
@@ -31,8 +33,9 @@ router.post("/", async (req, res) => {
         })
     } catch (error) {
         res.status(404).json({
-            message: "Error en la creación de usuaiors",
-            error: error.message
+            message: "Error en la creación de usuarios",
+            errorMessage: error.message,
+            errorDetail:error
         })
     }
 })
