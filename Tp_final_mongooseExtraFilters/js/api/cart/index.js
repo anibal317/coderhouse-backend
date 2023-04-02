@@ -1,6 +1,7 @@
 const app = require("express");
 const router = app.Router();
 const cartModel = require('../../../models/cart')
+const productsModel = require("../../../models/products")
 
 router.get("/", async (req, res) => {
 	console.log("Listando todos los productos")
@@ -96,10 +97,43 @@ router.post("/", async (req, res) => {
 
 });
 
-router.post("/:cid/product/:pid", async (req, res) => {
+router.put("/:cid/product/:pid", async (req, res) => {
+	const productId = req.params.pid
+	const cartId = req.params.cid
+	console.log("Cart:", cartId, "Producto:", productId)
 	try {
-		let response = await manager.addProductToCart(parseInt(req.params.cid), parseInt(req.params.pid), 1)
-		res.send(response)
+		const cart = await cartModel.findById(cartId)
+		const products = await productsModel.findById(productId)
+
+		let exitsProduct = cart.products.findIndex(el => el.id === productId)
+
+		if (exitsProduct >= 0) {
+			console.log(cart.products)
+			let newElement = cart.products[exitsProduct]
+			newElement.qty = newElement.qty + 1
+			newElement.total = newElement.price * newElement.qty
+			let total = cart.products.reduce((anterior, actual) => anterior + actual.total, 0)
+
+			console.log(cart)
+			let result = await cartModel.findOneAndUpdate({ _id: cartId }, { products: newElement, total })
+
+			res.json("ok")
+		} else {
+			let newElement = {
+				price: products.price,
+				qty: 1,
+				total: products.price,
+				id: products._id.toString()
+			}
+			let newArrElements = [...cart.products, newElement]
+			let total = newArrElements.reduce((anterior, actual) => anterior + actual.total, 0)
+			console.log(newArrElements)
+			console.log(total)
+			let result = await cartModel.findOneAndUpdate({ _id: cartId }, { products: newArrElements, total })
+
+			res.json('Se agrega elelemnto al carrito')
+		}
+
 	} catch {
 		res.send("Error en alguno de los archivos")
 	}
@@ -132,38 +166,14 @@ router.delete("/:cid/product/:pid", async (req, res) => {
 		const cart = await cartModel.findById(cartId)
 		const productIdx = cart.products.findIndex(el => el.id === productId)
 		cart.products.splice(productIdx, 1)
-		console.log(cart.products)
 		let total = cart.products.reduce((anterior, actual) => anterior + actual.total, 0)
-		console.log(cart.products)
-		console.log(total)
-		let result = await cartModel.findOneAndUpdate({_id:cartId},{products:cart.products,total})
-		res.send("Ok")
+		let result = await cartModel.findOneAndUpdate({ _id: cartId }, { products: cart.products, total })
+		res.send("Cart Actualizado")
 		// res.status(400).send(`Elemento eliminado`)
 	} catch (error) {
 		res.status(400).send(`Error al eliminar el producto ${error}`)
 	}
 });
 
-// router.put("/:id", async (req, res) => {
-// 	res.send("Falta desarrollo")
-// 	// let productId = parseInt(req.params.id)
-// 	// let newData = req.body
-// 	// console.log(`Editando el producto  => id:${productId}`)
-// 	// try {
-// 	// 	const objetos = await fs.readFile("./files/cartProducts.txt", 'utf-8')
-// 	// 	let allProducts = await JSON.parse(objetos)
-// 	// 	let oneProduct = await allProducts.find(element => element.id === productId)
-
-// 	// 	Object.keys(newData).forEach((key) => {
-// 	// 		oneProduct[key] === undefined ? null : oneProduct[key] = newData[key]
-// 	// 	})
-// 	// 	await fs.writeFile("./files/cartProducts.txt", JSON.stringify(allProducts, null, 2))
-
-// 	// 	res.status(200).send("Producto actualizado")
-
-// 	// } catch (error) {
-// 	// 	res.status(400).send(`Error en consultar los datos ${error}`)
-// 	// }
-// });
 
 module.exports = router;
