@@ -113,3 +113,11 @@ label[for]:after {
   .btn-home:hover {
 	transform: scale(1.2);
   }
+
+  .hidden{
+	display: none !important;
+  }
+
+  .userInfo{
+	margin-left: 2rem;
+}

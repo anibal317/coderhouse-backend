@@ -28,17 +28,26 @@
                         <a class="nav-link active" aria-current="page" href="/">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/sections/products.html">Alta de productos</a>
+                        <a class="nav-link" href="/sections/products.html">Lista de productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/sections/my_cart.html">Mis Compras</a>
+                        <a class="nav-link" href="http://localhost:3000/sections/chat.html">Chatea con nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/sections/my_cart.html">Mis compras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link signin" aria-hidden="true" href="/sections/login.html" id="login">Ingresar</a>
+                        <a class="nav-link signin hidden" aria-hidden="true" href="/sections/login.html" id="logout">Cerrar Sesíon</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-
-    <section class="container addProductSection">
+    <div id="userInfo" class="userInfo hidden">
+        <p></p>
+    </div>
+    <section class="container addProductSection hidden" id="frmAddProduct">
         <div class="formProduct container border border-radius border-3 mb-3">
             <div class="container-fluid accordion mb-3 mt-3" id="accordionExample">
                 <div class="w-50 accordion-item mx-auto">
@@ -192,6 +201,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script src="../js/productsDomElements.js" type="module"></script>
+    <script src="../js/index.js" type="module"></script>
     <script src="../js/products.js" type="module"></script>
 
 </body>

@@ -1,17 +1,11 @@
-const bcrypt = require('bcrypt');
+const md5 = require('blueimp-md5');
 
 async function hashPassword(password) {
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    return hashedPassword;
+    return md5(password);
 }
 
-async function comparePassword(password, hash) {
-    const isMatch = await bcrypt.compare(password, hash);
-    return isMatch;
-  }
-  
+
+
 module.exports = {
-    hashPassword,
-    comparePassword
+    hashPassword
 }
