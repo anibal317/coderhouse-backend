@@ -49,11 +49,12 @@ router.post("/", async (req, res) => {
 
 router.post('/login', async (req, res) => {
     console.log("Login users")
-    const user = await userModel.find({ userName: req.body.userName })
+
+    const user = await userModel.find({ email: req.body.userName })
     const userInfo = user[0]
 
     try {
-        if (userInfo.userName === req.body.userName && await hashPassword(req.body.pwd) === userInfo.password) {
+        if (userInfo.email === req.body.userName && await hashPassword(req.body.pwd) === userInfo.password) {
             res.status(200).json({
                 status: "Success",
                 userData: {
