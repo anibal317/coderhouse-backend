@@ -100,6 +100,7 @@ router.post("/", async (req, res) => {
 router.put("/:cid/product/:pid", async (req, res) => {
 	const productId = req.params.pid
 	const cartId = req.params.cid
+	const { qty } = req.body
 	console.log("Cart:", cartId, "Producto:", productId)
 	try {
 		const cart = await cartModel.findById(cartId)
@@ -121,7 +122,7 @@ router.put("/:cid/product/:pid", async (req, res) => {
 		} else {
 			let newElement = {
 				price: products.price,
-				qty: 1,
+				qty: qty,
 				total: products.price,
 				id: products._id.toString()
 			}
@@ -143,18 +144,16 @@ router.put("/:cid/product/:pid", async (req, res) => {
 router.delete('/:cid', async function (req, res) {
 	let cartId = req.params.cid
 	console.log(`Borrando el producto => id: ${cartId}`)
-	const result = await cartModel.deleteOne({ _id: cartId }).then(() => {
-		console.log(result, "result")
-		res.status(200).json({
-			message: result,
-			status: "Success"
-		})
-	}).catch(err => {
-		res.status(404).json({
-			message: err
-		})
+	const cart = await cartModel.findById(cartId)
+	console.log(cart)
+	let result = await cartModel.findOneAndUpdate({ _id: cartId }, { products: [], total: 0 })
 
+	res.status(200).json({
+		message: result,
+		status: "Success"
 	})
+
+
 
 })
 

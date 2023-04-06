@@ -1,6 +1,7 @@
 const app = require("express");
 const router = app.Router();
 const cartModel = require('../../../models/cart')
+const productsModel = require("../../../models/products")
 
 router.get("/", async (req, res) => {
 	console.log("Listando todos los productos")
@@ -20,8 +21,24 @@ router.get("/", async (req, res) => {
 	}
 });
 
-router.get("/:id", async (req, res) => {
-	let productId = req.params.id
+router.get("/allCartsId", async (req, res) => {
+	console.log(`Listando todos los id de los carts`)
+	try {
+		const allCarts = await cartModel.find()
+		const onlyKeys = allCarts.map(el => el._id)
+		// if (oneCart) {
+		res.status(200).json({
+			status: "Success",
+			cart: onlyKeys
+		})
+	} catch (error) {
+		res.status(400).send(`Error en consultar los datos ${error}`)
+	}
+})
+
+
+router.get("/:cid", async (req, res) => {
+	let productId = req.params.cid
 	console.log(`Listando el producto  => id:${productId}`)
 	try {
 		const oneCart = await cartModel.findById(productId)
@@ -41,71 +58,121 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
 	console.log("Agregando elemento al carrito")
 	let product = req.body
+	console.log(product)
 
 	const cartItems = await cartModel.find()
-
-
 	const existElement = cartItems.find((item, index) => item.prod_id === product.prod_id)
 
-	if (existElement) {
-		const result = await cartModel.findOneAndUpdate(existElement._id, {
-			qtyBought: existElement.qtyBought + product.qtyBought,
-			subTotal: existElement.subTotal + product.subTotal
-		})
-		res.status(200).json({
-			status: "Succes",
-			res: result
-		})
+	// userId: String,
+	// products: Array,
+	// creationDate: {
+	//     type:Date,
+	//     default: Date.now()
+	// },
+	// state:{
+	//     type: Boolean,
+	//     default:0
+	// },
+	// total:Number,
 
-	} else {
+	// if (existElement) {
+	// 	const result = await cartModel.findOneAndUpdate(existElement._id, {
+	// 		qtyBought: existElement.qtyBought + product.qtyBought,
+	// 		subTotal: existElement.subTotal + product.subTotal
+	// 	})
+	// 	res.status(200).json({
+	// 		status: "Succes",
+	// 		res: result
+	// 	})
 
-		try {
-			const prodCreated = await cartModel.create(product)
-			res.status(200).json({ satatus: "Success", result: prodCreated })
-		} catch (error) {
-			res.status(400).json({ message: `Error al procesar: ${error}` })
+	// } else {
+
+	// 	try {
+	// 		const prodCreated = await cartModel.create(product)
+	// 		res.status(200).json({ satatus: "Success", result: prodCreated })
+	// 	} catch (error) {
+	// 		res.status(400).json({ message: `Error al procesar: ${error}` })
+	// 	}
+	// }
+
+});
+
+router.put("/:cid/product/:pid", async (req, res) => {
+	const productId = req.params.pid
+	const cartId = req.params.cid
+	const { qty } = req.body
+	console.log("Cart:", cartId, "Producto:", productId)
+	try {
+		const cart = await cartModel.findById(cartId)
+		const products = await productsModel.findById(productId)
+
+		let exitsProduct = cart.products.findIndex(el => el.id === productId)
+
+		if (exitsProduct >= 0) {
+			console.log(cart.products)
+			let newElement = cart.products[exitsProduct]
+			newElement.qty = newElement.qty + 1
+			newElement.total = newElement.price * newElement.qty
+			let total = cart.products.reduce((anterior, actual) => anterior + actual.total, 0)
+
+			console.log(cart)
+			let result = await cartModel.findOneAndUpdate({ _id: cartId }, { products: newElement, total })
+
+			res.json("ok")
+		} else {
+			let newElement = {
+				price: products.price,
+				qty: qty,
+				total: products.price,
+				id: products._id.toString()
+			}
+			let newArrElements = [...cart.products, newElement]
+			let total = newArrElements.reduce((anterior, actual) => anterior + actual.total, 0)
+			console.log(newArrElements)
+			console.log(total)
+			let result = await cartModel.findOneAndUpdate({ _id: cartId }, { products: newArrElements, total })
+
+			res.json('Se agrega elelemnto al carrito')
 		}
+
+	} catch {
+		res.send("Error en alguno de los archivos")
 	}
 
 });
 
-router.put("/:id", async (req, res) => {
-	res.send("Falta desarrollo")
-	// let productId = parseInt(req.params.id)
-	// let newData = req.body
-	// console.log(`Editando el producto  => id:${productId}`)
-	// try {
-	// 	const objetos = await fs.readFile("./files/cartProducts.txt", 'utf-8')
-	// 	let allProducts = await JSON.parse(objetos)
-	// 	let oneProduct = await allProducts.find(element => element.id === productId)
+router.delete('/:cid', async function (req, res) {
+	let cartId = req.params.cid
+	console.log(`Borrando el producto => id: ${cartId}`)
+	const cart = await cartModel.findById(cartId)
+	console.log(cart)
+	let result = await cartModel.findOneAndUpdate({ _id: cartId }, { products: [], total: 0 })
 
-	// 	Object.keys(newData).forEach((key) => {
-	// 		oneProduct[key] === undefined ? null : oneProduct[key] = newData[key]
-	// 	})
-	// 	await fs.writeFile("./files/cartProducts.txt", JSON.stringify(allProducts, null, 2))
+	res.status(200).json({
+		message: result,
+		status: "Success"
+	})
 
-	// 	res.status(200).send("Producto actualizado")
 
-	// } catch (error) {
-	// 	res.status(400).send(`Error en consultar los datos ${error}`)
-	// }
+
+})
+
+
+router.delete("/:cid/product/:pid", async (req, res) => {
+	const productId = req.params.pid
+	const cartId = req.params.cid
+	try {
+		const cart = await cartModel.findById(cartId)
+		const productIdx = cart.products.findIndex(el => el.id === productId)
+		cart.products.splice(productIdx, 1)
+		let total = cart.products.reduce((anterior, actual) => anterior + actual.total, 0)
+		let result = await cartModel.findOneAndUpdate({ _id: cartId }, { products: cart.products, total })
+		res.send("Cart Actualizado")
+		// res.status(400).send(`Elemento eliminado`)
+	} catch (error) {
+		res.status(400).send(`Error al eliminar el producto ${error}`)
+	}
 });
 
-router.delete("/:id", async (req, res) => {
-	res.send("Falta desarrollo")
-	// let productId = req.params.id
-	// console.log(`Borrando el producto => id: ${productId}`)
-
-	// try {
-	// 	const objetos = await fs.readFile("./files/cartProducts.txt", "utf-8")
-	// 	let allProducts = await JSON.parse(objetos)
-	// 	let index = await allProducts.findIndex(element => element.id === productId)
-	// 	allProducts.splice(index, 1)
-	// 	await fs.writeFile("./files/cartProducts.txt", JSON.stringify(allProducts, null, 2))
-	// 	res.status(400).send(`Elemento eliminado`)
-	// } catch (error) {
-	// 	res.status(400).send(`Error al eliminar el producto ${error}`)
-	// }
-});
 
 module.exports = router;
