@@ -58,42 +58,14 @@ router.get("/:cid", async (req, res) => {
 router.post("/", async (req, res) => {
 	console.log("Agregando elemento al carrito")
 	let product = req.body
+	product.total = product.products.reduce((anterior, actual) => anterior + actual.total, 0)
 	console.log(product)
-
-	const cartItems = await cartModel.find()
-	const existElement = cartItems.find((item, index) => item.prod_id === product.prod_id)
-
-	// userId: String,
-	// products: Array,
-	// creationDate: {
-	//     type:Date,
-	//     default: Date.now()
-	// },
-	// state:{
-	//     type: Boolean,
-	//     default:0
-	// },
-	// total:Number,
-
-	// if (existElement) {
-	// 	const result = await cartModel.findOneAndUpdate(existElement._id, {
-	// 		qtyBought: existElement.qtyBought + product.qtyBought,
-	// 		subTotal: existElement.subTotal + product.subTotal
-	// 	})
-	// 	res.status(200).json({
-	// 		status: "Succes",
-	// 		res: result
-	// 	})
-
-	// } else {
-
-	// 	try {
-	// 		const prodCreated = await cartModel.create(product)
-	// 		res.status(200).json({ satatus: "Success", result: prodCreated })
-	// 	} catch (error) {
-	// 		res.status(400).json({ message: `Error al procesar: ${error}` })
-	// 	}
-	// }
+	try {
+		const prodCreated = await cartModel.create(product)
+		res.status(200).json({ satatus: "Success", result: prodCreated })
+	} catch (error) {
+		res.status(400).json({ message: `Error al procesar: ${error}` })
+	}
 
 });
 
@@ -123,7 +95,7 @@ router.put("/:cid/product/:pid", async (req, res) => {
 			let newElement = {
 				price: products.price,
 				qty: qty,
-				total: products.price,
+				total: products.price * qty,
 				id: products._id.toString()
 			}
 			let newArrElements = [...cart.products, newElement]
