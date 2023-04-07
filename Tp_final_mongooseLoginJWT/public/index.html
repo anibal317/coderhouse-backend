@@ -33,6 +33,9 @@
                         <a class="nav-link" href="/sections/products.html">Lista de productos</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/sections/products.html" id="altaProveedores">Alta de productos</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="http://localhost:3000/sections/chat.html">Chatea con nosotros</a>
                     </li>
                     <li class="nav-item">
@@ -46,7 +49,9 @@
             </div>
         </div>
     </nav>
-
+    <div id="userInfo" class="userInfo hidden">
+        <p></p>
+    </div>
     <!-- content -->
     <div class="container px-4 py-5" id="custom-cards">
         <h2 class="pb-2 border-bottom">
@@ -87,14 +92,14 @@
                 </div>
             </div>
 
-            <div class="col" id="altaProveedores">
+            <div class="col" id="altaCardProveedores">
                 <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
                     style="background-image: url('https://getbootstrap.com/docs/5.2/examples/features/unsplash-photo-2.jpg');">
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                         <a href="/api/customers">
                             Ver
                         </a>
-                        <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold ">
+                        <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold " id="cardAltaProveedores">
                             Alta de proveedores
                         </h2>
                         <ul class="d-flex list-unstyled mt-auto">

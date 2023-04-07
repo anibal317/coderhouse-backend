@@ -31,10 +31,13 @@
                         <a class="nav-link" href="/sections/products.html">Lista de productos</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/sections/products.html" id="altaProveedores">Alta de productos</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="http://localhost:3000/sections/chat.html">Chatea con nosotros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/sections/my_cart.html">Mis compras</a>
+                        <a class="nav-link" href="/sections/my_cart.html" id="misCompras">Mis compras</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link signin" aria-hidden="true" href="/sections/login.html" id="login">Ingresar</a>
@@ -52,12 +55,12 @@
             <div class="container-fluid accordion mb-3 mt-3" id="accordionExample">
                 <div class="w-50 accordion-item mx-auto">
                     <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button bg-secondary text-white" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <button class="accordion-button bg-secondary text-white collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                             Agregar un nuevo producto
                         </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                    <div id="collapseOne" class="accordion-collapse collapsed" aria-labelledby="headingOne"
                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <!-- <form action="/api/products" method="POST" enctype="multipart/form-data"

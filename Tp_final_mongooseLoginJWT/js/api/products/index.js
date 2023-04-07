@@ -21,21 +21,21 @@ router.get("/", async (req, res) => {
 	try {
 		console.log("Consultando porductos")
 		if (req.query.sort) {
-			let sort = req.query.sort === 'asc' ? 1 : -1
-			console.log("Con sort", sort)
-			const allProducts = await productsModel.aggregate([
-				{
-					$sort: { price: sort }
-				}
-			]).paginate(
+			let sortBy = req.query.sort === 'asc' ? 1 : -1
+
+			let myAggregate = await productsModel.paginate(
 				{},
 				{
 					limit: req.query.limit || process.env.DEFAULT_LIMIT,
-					page: req.query.page || 1
+					page: req.query.page || 1, sort: { price: sortBy },
 				})
+				
+			myAggregate.prevLink = myAggregate.hasPrevPage == false ? null : `http://${req.get('host')}${req.baseUrl}${req.url.replace("/","")}&page=${myAggregate.prevPage}`
+			myAggregate.nextLink = myAggregate.hasNextPage == false ? null : `http://${req.get('host')}${req.baseUrl}${req.url.replace("/","")}&page=${myAggregate.nextPage}`
+
 			res.status(200).json({
 				status: "Success",
-				products: allProducts
+				products: myAggregate
 			})
 
 		} else {
@@ -46,7 +46,10 @@ router.get("/", async (req, res) => {
 					limit: req.query.limit || process.env.DEFAULT_LIMIT,
 					page: req.query.page || 1
 				})
-			console.log(allProducts)
+
+				allProducts.prevLink = allProducts.hasPrevPage == false ? null : `http://${req.get('host')}${req.url.replace("/","")}?page=${allProducts.prevPage}`
+				allProducts.nextLink = allProducts.hasNextPage == false ? null : `http://${req.get('host')}${req.url.replace("/","")}?page=${allProducts.nextPage}`
+
 			res.status(200).json({
 				status: "Success",
 				products: allProducts

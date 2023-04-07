@@ -16,7 +16,7 @@ btnLogin.addEventListener('click', login)
 async function login() {
     if (emailUser.value === "" || password.value === '') {
         swal({ title: "Datos vacios!", text: `Debe ingresar los datos obligatorios`, icon: "error" })
-        
+
     } else {
         const myHeaders = new Headers();
         swal({ title: "Datos Bien!", text: `Good`, icon: "success" })
@@ -26,7 +26,7 @@ async function login() {
             "userName": emailUser.value,
             "pwd": password.value
         });
-        console.log(myBody)
+
         let requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -39,7 +39,7 @@ async function login() {
                 if (result.status === "Success") {
                     swal({ title: "Congrats!", text: `User was found `, icon: "success" })
                     localStorage.setItem("logged", JSON.stringify(result.userData))
-                    window.location.href = "http://localhost:8080/sections/products.html";
+                    window.location.href = "http://localhost:8080/";
                 } else {
                     swal({ title: "Sorry!", text: `User not found `, icon: "error" })
 
@@ -47,5 +47,14 @@ async function login() {
             }
             )
             .catch(error => console.log(error))
+
+
+        fetch("http://localhost:8080/api/cookies/setCookie", requestOptions)
+            .then(response => response.json())
+            .thean(result => {
+                console.log(result)
+            })
+            .catch(error => console.log(error))
+
     }
 }
