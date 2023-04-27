@@ -1,0 +1,10 @@
+/* Estilos personalizados */
+.invalid-feedback {
+    display: none;
+    color: red;
+  }
+  
+  /* Incluimos los estilos de Bootstrap */
+  @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css');
+  // Función para validar el formulario de registro
+(function() {
